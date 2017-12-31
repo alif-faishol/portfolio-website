@@ -1,7 +1,6 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './reducer'
-import {toggleTutor} from './action'
 
 const composedEnhanchers = compose(
   applyMiddleware(
@@ -15,13 +14,14 @@ const store = createStore(
   composedEnhanchers
 )
 
+
+// To use in development
+//-----------------------------
 console.log(store.getState())
 
-const unsubscribe = store.subscribe(() =>
+store.subscribe(() =>
   console.log(store.getState())
 )
-
-store.dispatch(toggleTutor())
-store.dispatch(toggleTutor())
+//-----------------------------
 
 export default store
