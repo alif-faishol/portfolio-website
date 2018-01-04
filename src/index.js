@@ -3,6 +3,7 @@ import {Provider} from 'react-redux'
 import {render} from 'react-dom'
 import App from './App'
 import store from './store'
+import resizeHandler from './miscScript'
 import registerServiceWorker from './registerServiceWorker'
 
 render(
@@ -11,4 +12,7 @@ render(
   </Provider>,
   document.getElementById('root')
 )
+
+resizeHandler()
+
 registerServiceWorker()

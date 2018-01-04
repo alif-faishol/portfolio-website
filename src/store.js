@@ -2,9 +2,17 @@ import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './reducer'
 
-const composedEnhanchers = compose(
+const composedEnhanchers = 
+  (process.env.NODE_ENV === 'development'
+    && (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()
+      : false
+    )  
+  )
+  || compose(
   applyMiddleware(
-    thunk
+    thunk,
+    
   )
 )
 
@@ -17,11 +25,13 @@ const store = createStore(
 
 // To use in development
 //-----------------------------
-console.log(store.getState())
-
-store.subscribe(() =>
+if (process.env.NODE_ENV === 'development') {
   console.log(store.getState())
-)
+
+  store.subscribe(() =>
+    console.log(store.getState())
+  )
+}
 //-----------------------------
 
 export default store
