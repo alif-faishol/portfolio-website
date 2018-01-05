@@ -8,14 +8,17 @@ import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
 
 const RootContainer = styled.div`
+  &::-webkit-scrollbar {
+    width: 0;
+  }
   z-index: 100;
   position: fixed;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   bottom: 0;
   top: 0;
-  background-color: ${color('light').A};
+  background-color: ${props => color(props.colorscheme).A};
 `
 
 const BehindContainer = styled.div`
@@ -39,7 +42,10 @@ class Menu extends React.Component {
           : 50,
           opacity: this.show
           ? 0.5
-          : 0
+          : 0,
+          borderBottom: this.show
+          ? 200
+          : 5,
         }}
         style={{
           height: this.show
@@ -47,7 +53,10 @@ class Menu extends React.Component {
           : spring(50),
           opacity: this.show
           ? spring(0.5, {stiffness: 60, damping: 15})
-          : spring(0, {stiffness: 60, damping: 15})
+          : spring(0, {stiffness: 60, damping: 15}),
+          borderBottom: this.show
+          ? spring(200, {stiffness: 60, damping: 15})
+          : spring(5, {stiffness: 60, damping: 15})
         }}
       >
         {interpolatingStyles => (
@@ -61,7 +70,8 @@ class Menu extends React.Component {
             <RootContainer
               style={{
                 ...(!this.show && {overflowY: 'hidden'}),
-                height: interpolatingStyles.height            
+                height: interpolatingStyles.height,
+                borderBottom: interpolatingStyles.borderBottom + 'px solid black',
               }}
             >
               <ContentContainer>
@@ -79,6 +89,7 @@ export default connect(
   ({main}) => ({
     showTutor: main.showTutor,
     menuExpanded: main.menuExpanded,
+    colorscheme: main.colorscheme,
     viewportSize: main.viewportSize
   }),
   dispatch => ({

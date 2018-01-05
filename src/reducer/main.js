@@ -29,8 +29,18 @@ const viewportSize = (state={
   }
 }
 
+const colorscheme = (state='light', action) => {
+  switch (action.type) {
+    case 'SWITCH_COLORSCHEME':
+      return action.colorscheme
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   showTutor,
   menuExpanded,
-  viewportSize
+  viewportSize,
+  colorscheme
 })
