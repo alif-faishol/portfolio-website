@@ -27,8 +27,8 @@ class MainRouteContainer extends React.Component {
 export default connect(
   ({main}) => ({menuExpanded: main.menuExpanded}),
   dispatch => ({
-    toggleMenu: () => {
-      dispatch(toggleMenu())
+    toggleMenu: (toBe) => {
+      dispatch(toggleMenu(toBe))
     }
   })
 )(MainRouteContainer)

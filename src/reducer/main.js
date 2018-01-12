@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux'
+import getColorscheme from '../App/common/themes'
 
 const showTutor = (state=true, action) => {
   switch (action.type) {
@@ -29,10 +30,10 @@ const viewportSize = (state={
   }
 }
 
-const colorscheme = (state='light', action) => {
+const colorscheme = (state=getColorscheme('light'), action) => {
   switch (action.type) {
     case 'SWITCH_COLORSCHEME':
-      return action.colorscheme
+      return getColorscheme(action.colorscheme)
     default:
       return state
   }

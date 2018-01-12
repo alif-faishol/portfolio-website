@@ -3,22 +3,22 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 import {toggleMenu} from '../../../action'
-import color from '../../common/themes'
-import AFLogo from '../../common/animation/AFLogo'
 
 const RootContainer = styled.div`
   width: 100%;
   display: flex;
   height: 50px;
+  font-size: 20px;
   align-items: center;
 `
 
-const BackBtn = styled.div`
+const BackBtn = styled(Link)`
   height: 50px;
   width: 30%;
   display: flex;
   flex-grow: 1;
   align-items: center;
+  text-decoration: none;
 `
 
 const LogoAF = styled.div`
@@ -43,23 +43,22 @@ const MenuToggleBtn = styled.div`
 `
 class ClosedMenu extends React.Component {
   render() {
-    return (
-      <RootContainer>
-        <BackBtn>
-          <Link to='/'>
-            Home
-          </Link>
-        </BackBtn>
-        <LogoAF innerRef={ref => {this.LogoAF = ref}}>
-          AF
-        </LogoAF>
-        <MenuToggleBtn
-          onClick={this.props.toggleMenu}
-        >
-          Click to Toggle the Menu
-        </MenuToggleBtn>
-      </RootContainer>
-    )
+    return !this.props.root &&
+      (
+        <RootContainer>
+          <BackBtn to='/' onClick={() => {this.props.toggleMenu(true)}}>
+            HOME
+          </BackBtn>
+          <LogoAF innerRef={ref => {this.LogoAF = ref}}>
+            alif-faishol
+          </LogoAF>
+          <MenuToggleBtn
+            onClick={this.props.toggleMenu}
+          >
+            MENU
+          </MenuToggleBtn>
+        </RootContainer>
+      )
   }
 }
 

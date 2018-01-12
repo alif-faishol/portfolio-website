@@ -3,22 +3,24 @@ import {connect} from 'react-redux'
 import {Motion, spring} from 'react-motion'
 import styled from 'styled-components'
 import {toggleTutor} from '../../action'
-import color from '../common/themes'
 import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
+import MenuContent from './MenuContent'
+import MenuHome from './MenuHome'
 
 const RootContainer = styled.div`
   &::-webkit-scrollbar {
     width: 0;
   }
   z-index: 100;
+-ms-overflow-style: none;
   position: fixed;
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
   bottom: 0;
   top: 0;
-  background-color: ${props => color(props.colorscheme).A};
+  background-color: ${props => props.colorscheme.A};
 `
 
 const BehindContainer = styled.div`
@@ -32,6 +34,16 @@ const BehindContainer = styled.div`
 `
 
 class Menu extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      menuCompletelyHided: !(props.match.isExact || props.menuExpanded)
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    nextProps.menuExpanded &&
+    this.setState({menuCompletelyHided: !nextProps.menuExpanded})
+  }
   render() {
     this.show = this.props.match.isExact || this.props.menuExpanded
     return (
@@ -44,7 +56,7 @@ class Menu extends React.Component {
           ? 0.5
           : 0,
           borderBottom: this.show
-          ? 200
+          ? 100
           : 5,
         }}
         style={{
@@ -55,9 +67,16 @@ class Menu extends React.Component {
           ? spring(0.5, {stiffness: 60, damping: 15})
           : spring(0, {stiffness: 60, damping: 15}),
           borderBottom: this.show
-          ? spring(200, {stiffness: 60, damping: 15})
-          : spring(5, {stiffness: 60, damping: 15})
+          ? spring(100)
+          : spring(5)
         }}
+        onRest={
+          () => {
+            this.setState({
+              menuCompletelyHided: !this.show,
+            })
+          }
+        }
       >
         {interpolatingStyles => (
           <div>
@@ -68,6 +87,7 @@ class Menu extends React.Component {
               }}
             />
             <RootContainer
+              colorscheme={this.props.colorscheme}
               style={{
                 ...(!this.show && {overflowY: 'hidden'}),
                 height: interpolatingStyles.height,
@@ -75,7 +95,16 @@ class Menu extends React.Component {
               }}
             >
               <ContentContainer>
-                <MenuHeader menuExpanded={this.show}/>
+                <MenuHeader root={this.props.match.isExact} menuExpanded={this.show}/>
+
+                {!this.state.menuCompletelyHided && (
+                      <div>
+                        {this.props.match.isExact
+                            ? <MenuHome/>
+                            : <MenuContent/>
+                        }
+                      </div>
+                )}
               </ContentContainer>
             </RootContainer>
           </div>
