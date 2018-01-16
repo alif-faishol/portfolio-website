@@ -10,15 +10,6 @@ const showTutor = (state=true, action) => {
   }
 }
 
-const menuExpanded = (state=false, action) => {
-  switch (action.type) {
-    case 'TOGGLE_MENU':
-      return action.toBe ? action.toBe : !state
-    default:
-      return state
-  }
-}
-
 const viewportSize = (state={
   height: window.innerHeight,
   width: window.innerWidth
@@ -41,7 +32,6 @@ const colorscheme = (state=getColorscheme('light'), action) => {
 
 export default combineReducers({
   showTutor,
-  menuExpanded,
   viewportSize,
   colorscheme
 })

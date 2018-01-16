@@ -26,11 +26,6 @@ const Logo = styled.div`
   }
 `
 
-const MenuContainer = styled.div`
-  display: flex; 
-  flex: 2 0 200px;
-`
-
 const Menus = styled(Link)`
   flex: 1 0 0;
   display: flex;
@@ -38,11 +33,8 @@ const Menus = styled(Link)`
   align-items: center;
   flex-flow: column;
   text-decoration: none;
-  &:hover {
-    background-color: rgb(240, 240, 240);
-  }
   & svg {
-    fill: ${props => props.bgc};
+    fill: ${props => props.color};
     width: 40px;
   }
   & div {
@@ -50,6 +42,14 @@ const Menus = styled(Link)`
     color: rgb(120, 120, 120);
     font-size: 13px;
     margin-top: 20px;
+  }
+`
+
+const MenuContainer = styled.div`
+  display: flex; 
+  flex: 2 0 200px;
+  & ${Menus}:hover {
+    background-color: ${props => props.hoverColor};
   }
 `
 
@@ -61,16 +61,16 @@ const MenuHome = props => (
       </div>
       <div className='small'>WEB DEVELOPER &amp; GRAPHIC DESIGNER</div>
     </Logo>
-    <MenuContainer>
-      <Menus to='/portfolio' bgc={props.colorscheme.b}>
+    <MenuContainer hoverColor={props.colorscheme.highlight}>
+      <Menus to='/portfolio' color={props.colorscheme.accent2}>
         <PortfolioIcon/>
         <div>Portfolio</div>
       </Menus>
-      <Menus to='/cv' bgc={props.colorscheme.a}>
+      <Menus to='/cv' color={props.colorscheme.accent1}>
         <CVIcon/>
         <div>CV</div>
       </Menus>
-      <Menus to='/about' bgc={props.colorscheme.c}>
+      <Menus to='/about' color={props.colorscheme.accent3}>
         <AboutIcon/>
         <div>About</div>
       </Menus>

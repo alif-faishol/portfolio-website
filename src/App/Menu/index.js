@@ -20,7 +20,7 @@ const RootContainer = styled.div`
   overflow-x: hidden;
   bottom: 0;
   top: 0;
-  background-color: ${props => props.colorscheme.A};
+  background-color: ${props => props.colorscheme.menuBG};
 `
 
 const BehindContainer = styled.div`
@@ -116,11 +116,11 @@ class Menu extends React.Component {
 }
 
 export default connect(
-  ({main}) => ({
-    showTutor: main.showTutor,
-    menuExpanded: main.menuExpanded,
-    colorscheme: main.colorscheme,
-    viewportSize: main.viewportSize
+  (state) => ({
+    showTutor: state.main.showTutor,
+    menuExpanded: state.menu.menuExpanded,
+    colorscheme: state.main.colorscheme,
+    viewportSize: state.main.viewportSize
   }),
   dispatch => ({
     toggleTutor: () => {
