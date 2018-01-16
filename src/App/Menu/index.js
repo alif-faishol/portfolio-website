@@ -39,6 +39,7 @@ class Menu extends React.Component {
     this.state = {
       menuCompletelyHided: !(props.match.isExact || props.menuExpanded)
     }
+    this.reactMotionConf = {stiffness: 60, damping: 15}
   }
   componentWillReceiveProps(nextProps) {
     nextProps.menuExpanded &&
@@ -61,14 +62,14 @@ class Menu extends React.Component {
         }}
         style={{
           height: this.show
-          ? spring(this.props.viewportSize.height)
-          : spring(50),
+          ? spring(this.props.viewportSize.height, this.reactMotionConf)
+          : spring(50, this.reactMotionConf),
           opacity: this.show
-          ? spring(0.5, {stiffness: 60, damping: 15})
-          : spring(0, {stiffness: 60, damping: 15}),
+          ? spring(0.5, this.reactMotionConf)
+          : spring(0, this.reactMotionConf),
           borderBottom: this.show
-          ? spring(100)
-          : spring(5)
+          ? spring(100, {stiffness: 60, damping: 15})
+          : spring(5, {stiffness: 60, damping: 15})
         }}
         onRest={
           () => {

@@ -4,7 +4,7 @@ const light = {
   C: 'rgb(0, 0, 0)', //Highlight Background Color
   a: 'rgb(252, 77, 74)', //Accent Color 1
   b: 'rgb(111, 73, 255)', //Accent Color 2
-  c: 'rgb(102, 252, 59)' //Accent Color 3
+  c: 'rgb(75, 210, 99)' //Accent Color 3
 } 
 
 const experiment = {
