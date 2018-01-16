@@ -23,6 +23,7 @@ const Logo = styled.div`
     margin-top: 5px;
     color: rgb(120, 120, 120);
     font-size: 13px;
+    line-height: 25px;
   }
 `
 

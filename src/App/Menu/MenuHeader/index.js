@@ -50,7 +50,7 @@ class ClosedMenu extends React.Component {
             HOME
           </BackBtn>
           <LogoAF innerRef={ref => {this.LogoAF = ref}}>
-            alif-faishol
+            Alif Faishol
           </LogoAF>
           <MenuToggleBtn
             onClick={this.props.toggleMenu}

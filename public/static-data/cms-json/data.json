@@ -1,0 +1,73 @@
+{
+  "portfolio": [
+    {
+      "name": "Logo of Ombudsman",
+      "images": [
+        "/images/ombudsman.png"
+      ],
+      "body": "Rejected logo that was submitted for design contest."
+    },
+    {
+      "name": "Logo of Doorable",
+      "images": [
+        "/images/Doorable.jpg",
+        "/images/Doorable1.jpg"
+      ],
+      "body": "Rejected logo that was submitted for design contest."
+    },
+    {
+      "name": "Logo of Lucas KT Lee",
+      "images": [
+        "/images/LKL.png"
+      ],
+      "body": "Rejected logo that was submitted for design contest."
+    },
+    {
+      "name": "Logo of Curtis Miller Insurance",
+      "images": [
+        "/images/CMI.png",
+        "/images/CMI1.png"
+      ],
+      "body": "Rejected logo that was submitted for design contest."
+    },
+    {
+      "name": "Logo of ICHI",
+      "images": [
+        "/images/ICHI.jpg"
+      ],
+      "body": "Rejected logo that was submitted for design contest."
+    },
+    {
+      "name": "Logo of HeadBurst",
+      "body": "Rejected logo that was submitted for design contest.",
+      "images": [
+        "/images/HeadBurst.png"
+      ]
+    },
+    {
+      "name": "Logo of Germas",
+      "body": "Rejected logo that was submitted for design contest.",
+      "images": [
+        "/images/Germas.png"
+      ]
+    },
+    {
+      "name": "Logo of IWFD",
+      "images": [
+        "/images/IWFD.png",
+        "/images/IWFD1.png",
+        "/images/IWFD2.png",
+        "/images/IWFD3.png"
+      ],
+      "body": "Rejected logo that was submitted for design contest."
+    },
+    {
+      "name": "Logo of Zeppelin Freight",
+      "images": [
+        "/images/Zeppelin%20Freight.jpg",
+        "/images/Zeppelin%20Freight1.jpg"
+      ],
+      "body": "Rejected logo that was submitted for design contest."
+    }
+  ]
+}

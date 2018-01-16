@@ -19,6 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "edit-data": "cms-json -p 3001 -s './public/static-data/cms-json/schema.json' -d './public/static-data/cms-json/data.json'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
