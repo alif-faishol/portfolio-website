@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {toggleMenu} from '../../action'
+import {toggleMenu} from 'redux/modules/menu'
 import ContentContainer from './styles/ContentContainer'
 
 class MainRouteContainer extends React.Component {

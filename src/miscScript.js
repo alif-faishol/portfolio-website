@@ -1,5 +1,5 @@
-import store from 'store'
-import {updateViewportSize} from 'action'
+import store from 'redux/store'
+import {updateViewportSize} from 'redux/modules/main'
 
 const resized = () => {
   store.dispatch(updateViewportSize())

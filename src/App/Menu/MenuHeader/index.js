@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {toggleMenu} from '../../../action'
+import {toggleMenu} from 'redux/modules/menu'
 
 const RootContainer = styled.div`
   width: 100%;

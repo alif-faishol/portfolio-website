@@ -1,4 +1,5 @@
-const data = '/static-data/cms-json/data.json'
+const root = '/static-data'
+const data = root + '/cms-json/data.json'
 
 const getPortfolioItems = (sort, perPage, page) => {
   return new Promise((resolve, reject) => {
@@ -12,8 +13,10 @@ const getPortfolioItems = (sort, perPage, page) => {
       JSON.parse(data).portfolio.map((item, index) => ({
         id: index,
         title: item.name,
-        thumbnail: item.images[0],
-        images: item.images
+        thumbnail: root + item.images[0],
+        images: item.images.map(item => (
+          root + item
+        ))
       }))
     )
   })

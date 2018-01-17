@@ -8,7 +8,7 @@ import 'normalize.css'
 import MainRouteContainer from './common/MainRouteContainer'
 import styled, {injectGlobal} from 'styled-components'
 import color from './common/themes'
-import store from '../store'
+import store from 'redux/store'
 
 injectGlobal([`
   @import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700|Overlock:400,400i,700,700i');
