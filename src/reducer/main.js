@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import getColorscheme from '../App/common/themes'
+import getColorscheme from 'App/common/themes'
 
 const showTutor = (state=true, action) => {
   switch (action.type) {

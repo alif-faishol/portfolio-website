@@ -8,6 +8,11 @@ export const toggleMenu = to => ({
   toBe: to
 })
 
+export const toggler = forceTo => ({
+  type: 'TOGGLER',
+  forceTo
+})
+
 export const updateViewportSize = () => ({
   type: 'UPDATE_VIEWPORT_SIZE',
   newSize: {
@@ -19,4 +24,9 @@ export const updateViewportSize = () => ({
 export const switchColorscheme = colorscheme => ({
   type: 'SWITCH_COLORSCHEME',
   colorscheme
+})
+
+export const valuePasser = value => ({
+  type: 'VALUE_PASSER',
+  value
 })

@@ -1,5 +1,5 @@
-import store from './store.js'
-import {updateViewportSize} from './action.js'
+import store from 'store'
+import {updateViewportSize} from 'action'
 
 const resized = () => {
   store.dispatch(updateViewportSize())

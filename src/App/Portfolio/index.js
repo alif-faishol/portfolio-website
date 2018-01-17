@@ -1,10 +1,14 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
-import api from '../../apiHandler'
+import {connect} from 'react-redux'
+import {valuePasser} from 'action'
+import api from 'apiHandler'
 
 class Portfolio extends React.Component {
   componentDidMount() {
-    api.getPortfolioItems().then(res => console.log(res)).catch(err => console.log(err))
+    api.getPortfolioItems()
+      .then(res => this.props.getData(res))
+      .catch(err => console.log(err))
   }
   render() {
     return (
@@ -22,4 +26,11 @@ class Portfolio extends React.Component {
   }
 }
 
-export default Portfolio
+export default connect(
+  ({portfolio}) => ({
+    data: portfolio.data
+  }),
+  dispatch => ({
+    getData: data => dispatch(valuePasser(data))
+  })
+)(Portfolio)

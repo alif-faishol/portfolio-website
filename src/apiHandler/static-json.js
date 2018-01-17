@@ -8,7 +8,7 @@ const getPortfolioItems = (sort, perPage, page) => {
     xhr.onerror = () => reject(xhr.statusText);
     xhr.send();
 
-    const resolved = data => console.log(sort, perPage, page) || (
+    const resolved = data => (
       JSON.parse(data).portfolio.map((item, index) => ({
         id: index,
         title: item.name,
