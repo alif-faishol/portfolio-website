@@ -1,6 +1,6 @@
 const data = '/static-data/cms-json/data.json'
 
-const getPortfolioItems = (short, perPage, page) => {
+const getPortfolioItems = (sort, perPage, page) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", data);
@@ -8,7 +8,7 @@ const getPortfolioItems = (short, perPage, page) => {
     xhr.onerror = () => reject(xhr.statusText);
     xhr.send();
 
-    const resolved = data => (
+    const resolved = data => console.log(sort, perPage, page) || (
       JSON.parse(data).portfolio.map((item, index) => ({
         id: index,
         title: item.name,
