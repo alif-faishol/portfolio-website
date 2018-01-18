@@ -21,8 +21,8 @@ class Portfolio extends React.Component {
   render() {
     return (
       <PortfolioItemsContainer>
-        {this.props.data[0]
-            ? this.props.data.map(item => (
+        {(this.props.items.data && this.props.items.data[0])
+            ? this.props.items.data.map(item => (
               <PortfolioItem
                 key={item.id}
                 title={item.title}
@@ -39,7 +39,7 @@ class Portfolio extends React.Component {
 
 export default connect(
   ({portfolio}) => ({
-    data: portfolio.data,
+    items: portfolio.items,
   }),
   dispatch => ({
     loadData: data => dispatch(loadData(data)),

@@ -9,26 +9,39 @@ const getPortfolioItems = (args) => {
     xhr.onerror = () => reject(xhr.statusText);
     xhr.send();
 
-    const sorter = (a, b) => (
-      a[args.sortBy] < b[args.sortBy]
-      ? -1
-      : (a[args.sortBy] > b[args.sortBy] ? 1 : 0)
-    )
-
-    const totalPage = (perPage, totalData) => Math.ceil(totalData/perPage)
-
-    const resolved = data => console.log(args) || (
-      JSON.parse(data).portfolio.map((item, index) => ({
-        id: index,
-        title: item.name,
-        thumbnail: root + item.images[0],
-        images: item.images.map(item => (
-          root + item
-        ))
-      }))
-      .sort(sorter)
-      .splice(args.perPage*(args.page-1), args.perPage*args.page)
-    )
+    const resolved = data => {
+      const dataObj = (
+        JSON.parse(data).portfolio.map(
+          (item, index) => ({
+            id: index,
+            title: item.name,
+            thumbnail: root + item.images[0],
+            images: item.images.map(item => (
+              root + item
+            ))
+          })
+        )
+      )
+      const sorter = (a, b) => (
+        a[args.sortBy] < b[args.sortBy]
+        ? -1
+        : (a[args.sortBy] > b[args.sortBy] ? 1 : 0)
+      )
+      return {
+        meta: {
+          totalData: dataObj.length,
+          totalPage: Math.ceil(dataObj.length/args.perPage)
+        },
+        data: (
+          dataObj
+          .sort(sorter)
+          .splice(
+            args.perPage*(args.page-1),
+            args.perPage*args.page
+          )
+        )
+      }
+    }
   })
 }
 
