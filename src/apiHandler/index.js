@@ -6,13 +6,10 @@ export default {
   getPortfolioItems: (args) => {
     let defaultArgs = {
       sort: 'ASC',
-      perPage: 9,
+      sortBy: 'title',
+      perPage: 6,
       page: 1
     }
-    args = {
-      ...defaultArgs,
-      ...args
-    }
-    return apiProvider.getPortfolioItems(args.sort, args.perPage, args.page)
+    return apiProvider.getPortfolioItems({...defaultArgs, ...args})
   },
 }

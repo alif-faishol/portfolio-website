@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {loadData, toggleLoading} from 'redux/modules/portfolio'
+import {loadData} from 'redux/modules/portfolio'
 import api from 'apiHandler'
 import styled from 'styled-components'
 import PortfolioItem from 'App/Portfolio/PortfolioItem'
@@ -14,17 +14,15 @@ class Portfolio extends React.Component {
   componentDidMount() {
     api.getPortfolioItems()
       .then(res => {
-        this.props.getData(res)
-        this.props.dataIsLoadingToggle(false)
+        this.props.loadData(res)
       })
       .catch(err => console.log(err))
   }
   render() {
     return (
       <PortfolioItemsContainer>
-        {this.props.dataIsLoading
-            ? (<div>Loading</div>)
-            : this.props.data.map(item => (
+        {this.props.data[0]
+            ? this.props.data.map(item => (
               <PortfolioItem
                 key={item.id}
                 title={item.title}
@@ -32,6 +30,7 @@ class Portfolio extends React.Component {
                 images={item.images}
               />
             ))
+            : (<div>Loading</div>)
         }
       </PortfolioItemsContainer>
     )
@@ -41,10 +40,8 @@ class Portfolio extends React.Component {
 export default connect(
   ({portfolio}) => ({
     data: portfolio.data,
-    dataIsLoading: portfolio.dataIsLoading
   }),
   dispatch => ({
-    getData: data => dispatch(loadData(data)),
-    dataIsLoadingToggle: forceTo => dispatch(toggleLoading(forceTo))
+    loadData: data => dispatch(loadData(data)),
   })
 )(Portfolio)
