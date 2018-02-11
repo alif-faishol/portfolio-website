@@ -36,15 +36,11 @@ const BehindContainer = styled.div`
 class Menu extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      menuCompletelyHided: !(props.match.isExact || props.menuExpanded)
-    }
     this.reactMotionConf = {stiffness: 60, damping: 15}
   }
-  componentWillReceiveProps(nextProps) {
-    nextProps.menuExpanded &&
-    this.setState({menuCompletelyHided: !nextProps.menuExpanded})
-  }
+  //componentWillReceiveProps(nextProps) {
+
+  //}
   render() {
     this.show = this.props.match.isExact || this.props.menuExpanded
     return (
@@ -96,16 +92,14 @@ class Menu extends React.Component {
               }}
             >
               <ContentContainer>
-                <MenuHeader root={this.props.match.isExact} menuExpanded={this.show}/>
+                <MenuHeader/>
 
-                {!this.state.menuCompletelyHided && (
-                      <div>
-                        {this.props.match.isExact
-                            ? <MenuHome/>
-                            : <MenuContent/>
-                        }
-                      </div>
-                )}
+                <div>
+                  {this.props.menuContent === "home"
+                      ? <MenuHome/>
+                      : <MenuContent/>
+                  }
+                </div>
               </ContentContainer>
             </RootContainer>
           </div>
@@ -119,6 +113,7 @@ export default connect(
   (state) => ({
     showTutor: state.main.showTutor,
     menuExpanded: state.menu.menuExpanded,
+    menuContent: state.menu.menuContent,
     colorscheme: state.main.colorscheme,
     viewportSize: state.main.viewportSize
   }),

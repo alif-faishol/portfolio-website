@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 import {toggleMenu} from 'redux/modules/menu'
+import {changeMenuContent} from 'redux/modules/menu'
 
 const RootContainer = styled.div`
   width: 100%;
@@ -43,17 +44,22 @@ const MenuToggleBtn = styled.div`
 `
 class ClosedMenu extends React.Component {
   render() {
-    return !this.props.root &&
-      (
+      return (
         <RootContainer>
-          <BackBtn to='/' onClick={() => {this.props.toggleMenu(true)}}>
+          <BackBtn to='/' onClick={() => {
+            this.props.changeMenuContent("home")
+            this.props.toggleMenu(true)
+          }}>
             HOME
           </BackBtn>
           <LogoAF innerRef={ref => {this.LogoAF = ref}}>
             Alif Faishol
           </LogoAF>
           <MenuToggleBtn
-            onClick={this.props.toggleMenu}
+            onClick={() => {
+              this.props.changeMenuContent("navigation")
+              this.props.toggleMenu()
+            }}
           >
             MENU
           </MenuToggleBtn>
@@ -66,6 +72,9 @@ export default connect(null,
   dispatch => ({
     toggleMenu: () => {
       dispatch(toggleMenu())
+    },
+    changeMenuContent: (content) => {
+      dispatch(changeMenuContent(content))
     }
   })
 )(ClosedMenu)
