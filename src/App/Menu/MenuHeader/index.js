@@ -42,31 +42,31 @@ const MenuToggleBtn = styled.div`
   text-align: right;
   width: 30%;
 `
-class ClosedMenu extends React.Component {
-  render() {
-      return (
-        <RootContainer>
-          <BackBtn to='/' onClick={() => {
-            this.props.changeMenuContent("home")
-            this.props.toggleMenu(true)
-          }}>
-            HOME
-          </BackBtn>
-          <LogoAF innerRef={ref => {this.LogoAF = ref}}>
-            Alif Faishol
-          </LogoAF>
-          <MenuToggleBtn
-            onClick={() => {
-              this.props.changeMenuContent("navigation")
-              this.props.toggleMenu()
-            }}
-          >
-            MENU
-          </MenuToggleBtn>
-        </RootContainer>
-      )
-  }
-}
+const ClosedMenu = props => (
+  <RootContainer>
+    <BackBtn
+      to='/'
+      onClick={() => {
+        props.changeMenuContent("home")
+        props.toggleMenu(true)
+      }}
+    >
+      HOME
+    </BackBtn>
+    <LogoAF innerRef={ref => {this.LogoAF = ref}}>
+      {props.notHome ? "Alif Faishol" : "- - -"}
+    </LogoAF>
+    <MenuToggleBtn
+      onClick={() => {
+        props.changeMenuContent("navigation")
+        props.toggleMenu()
+      }}
+    >
+      MENU
+    </MenuToggleBtn>
+  </RootContainer>
+)
+
 
 export default connect(null,
   dispatch => ({

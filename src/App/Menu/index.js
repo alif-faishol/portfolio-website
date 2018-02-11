@@ -67,13 +67,6 @@ class Menu extends React.Component {
           ? spring(100, {stiffness: 60, damping: 15})
           : spring(5, {stiffness: 60, damping: 15})
         }}
-        onRest={
-          () => {
-            this.setState({
-              menuCompletelyHided: !this.show,
-            })
-          }
-        }
       >
         {interpolatingStyles => (
           <div>
@@ -92,8 +85,9 @@ class Menu extends React.Component {
               }}
             >
               <ContentContainer>
-                <MenuHeader/>
-
+                <MenuHeader
+                  notHome={(!this.show || this.props.menuContent !== "home")}
+                />
                 <div>
                   {this.props.menuContent === "home"
                       ? <MenuHome/>

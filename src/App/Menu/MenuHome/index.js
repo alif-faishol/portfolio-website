@@ -9,7 +9,7 @@ import AboutIcon from './about-icon-svg'
 const RootContainer = styled.div`
   display: flex;
   flex-flow: column;
-  min-height: ${props => props.viewportsize.height}px;
+  min-height: ${props => props.viewportsize.height - 50}px;
 `
 
 const Logo = styled.div`
