@@ -9,7 +9,8 @@ const RootContainer = styled.div`
   margin: 10px;
   & div.square {
     box-shadow: 0 0 2px #000000;
-    background-size: contain;
+    background-size: cover;
+    background-position: top;
     background-repeat: no-repeat;
     width: 100%;
     height: 0;
