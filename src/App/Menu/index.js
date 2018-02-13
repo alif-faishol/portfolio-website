@@ -1,12 +1,33 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Motion, spring} from 'react-motion'
 import styled from 'styled-components'
 import {toggleTutor} from 'redux/modules/main'
 import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
 import MenuContent from './MenuContent'
 import MenuHome from './MenuHome'
+
+import {TweenMax, Elastic} from 'gsap'
+
+const animation = (target, val, cb) => {
+  cb = cb || (() => null)
+  val = {
+    ...{
+      height: 0,
+      borderBottomWidth: 0,
+      duration: 1.5
+    },
+    ...val
+  }
+    return TweenMax
+      .to(target, val.duration, {
+        ...val,
+        onComplete() {
+          cb()
+        },
+        ease: Elastic.easeOut.config(0.25, 1)
+      })
+}
 
 const RootContainer = styled.div`
   &::-webkit-scrollbar {
@@ -36,69 +57,69 @@ const BehindContainer = styled.div`
 class Menu extends React.Component {
   constructor(props) {
     super(props)
-    this.reactMotionConf = {stiffness: 60, damping: 15}
+    this.show = props.match.isExact || props.menuExpanded
+    this.state = {
+      height: this.show ? props.viewportSize.height : 50,
+      opacity: this.show ? 0.5 : 0,
+      borderBottomWidth: this.show ? 100 : 5
+    }
+    this.animated = {}
   }
-  //componentWillReceiveProps(nextProps) {
-
-  //}
+  componentWillReceiveProps(nextProps) {
+    const newState = {
+      height: nextProps.match.isExact || nextProps.menuExpanded
+      ? nextProps.viewportSize.height
+      : 50,
+      opacity: nextProps.match.isExact || nextProps.menuExpanded
+      ? 0.5
+      : 0,
+      borderBottomWidth: nextProps.match.isExact || nextProps.menuExpanded
+      ? 100
+      : 5
+    }
+    animation(
+      this.animated.RootContainer,
+      ({...newState, opacity: 1}),
+      () => this.setState(newState)
+    )
+    animation(
+      this.animated.BehindContainer,
+      ({opacity: newState.opacity}),
+      () => this.setState(newState)
+    )
+  }
   render() {
-    this.show = this.props.match.isExact || this.props.menuExpanded
     return (
-      <Motion
-        defaultStyle={{
-          height: this.show
-          ? this.props.viewportSize.height
-          : 50,
-          opacity: this.show
-          ? 0.5
-          : 0,
-          borderBottom: this.show
-          ? 100
-          : 5,
-        }}
-        style={{
-          height: this.show
-          ? spring(this.props.viewportSize.height, this.reactMotionConf)
-          : spring(50, this.reactMotionConf),
-          opacity: this.show
-          ? spring(0.5, this.reactMotionConf)
-          : spring(0, this.reactMotionConf),
-          borderBottom: this.show
-          ? spring(100, {stiffness: 60, damping: 15})
-          : spring(5, {stiffness: 60, damping: 15})
-        }}
-      >
-        {interpolatingStyles => (
-          <div>
-            <BehindContainer
-              style={{
-                opacity: interpolatingStyles.opacity,
-                ...(!interpolatingStyles.opacity && {display: 'none'})
-              }}
+      <div>
+        <BehindContainer
+          innerRef={ref => this.animated.BehindContainer = ref}
+          style={{
+            opacity: this.state.opacity,
+            ...(!this.state.opacity && {display: 'none'})
+          }}
+        />
+        <RootContainer
+          innerRef={ref => this.animated.RootContainer = ref}
+          colorscheme={this.props.colorscheme}
+          style={{
+            ...(!this.show && {overflowY: 'hidden'}),
+            height: this.state.height,
+            borderBottom: this.state.borderBottomWidth + 'px solid black',
+          }}
+        >
+          <ContentContainer>
+            <MenuHeader
+              notHome={(!this.show || this.props.menuContent !== "home")}
             />
-            <RootContainer
-              colorscheme={this.props.colorscheme}
-              style={{
-                ...(!this.show && {overflowY: 'hidden'}),
-                height: interpolatingStyles.height,
-                borderBottom: interpolatingStyles.borderBottom + 'px solid black',
-              }}
-            >
-              <ContentContainer>
-                <MenuHeader
-                  notHome={(!this.show || this.props.menuContent !== "home")}
-                />
-                <div>
-                  {this.props.menuContent === "home"
-                      ? <MenuHome/>
-                      : <MenuContent/>
-                  }
-                </div>
-              </ContentContainer>
-            </RootContainer>
-          </div>
-        )}
-      </Motion>
+            <div>
+              {this.props.menuContent === "home"
+                  ? <MenuHome/>
+                  : <MenuContent/>
+              }
+            </div>
+          </ContentContainer>
+        </RootContainer>
+      </div>
     )
   }
 }
