@@ -54,7 +54,7 @@ const ClosedMenu = props => (
       HOME
     </BackBtn>
     <LogoAF innerRef={ref => {this.LogoAF = ref}}>
-      {props.notHome ? "Alif Faishol" : "- - -"}
+      Alif Faishol
     </LogoAF>
     <MenuToggleBtn
       onClick={() => {

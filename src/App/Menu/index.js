@@ -7,19 +7,15 @@ import MenuHeader from './MenuHeader'
 import MenuContent from './MenuContent'
 import MenuHome from './MenuHome'
 
-import {TweenMax, Elastic} from 'gsap'
+import {TweenLite, Elastic} from 'gsap'
 
 const animation = (target, val, cb) => {
   cb = cb || (() => null)
   val = {
-    ...{
-      height: 0,
-      borderBottomWidth: 0,
-      duration: 1.5
-    },
+    duration: 1.5,
     ...val
   }
-    return TweenMax
+    return TweenLite
       .to(target, val.duration, {
         ...val,
         onComplete() {
@@ -44,73 +40,63 @@ const RootContainer = styled.div`
   background-color: ${props => props.colorscheme.menuBG};
 `
 
-const BehindContainer = styled.div`
-  z-index: 99;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: black;
-`
-
 class Menu extends React.Component {
   constructor(props) {
     super(props)
-    this.show = props.match.isExact || props.menuExpanded
-    this.state = {
-      height: this.show ? props.viewportSize.height : 50,
-      opacity: this.show ? 0.5 : 0,
-      borderBottomWidth: this.show ? 100 : 5
-    }
+    this.stateConstructor = props => ({
+      show: props.match.isExact || props.menuExpanded,
+      RootContainerAni: {
+        height: props.match.isExact || props.menuExpanded
+        ? props.viewportSize.height
+        : 50,
+        borderBottomWidth: props.match.isExact || props.menuExpanded
+        ? 100
+        : 5
+      },
+      MenuHeaderAni: {
+        height: props.match.isExact || props.menuExpanded
+        ? 0
+        : 50,
+
+      }
+    })
+    this.state = this.stateConstructor(props)
     this.animated = {}
   }
   componentWillReceiveProps(nextProps) {
-    const newState = {
-      height: nextProps.match.isExact || nextProps.menuExpanded
-      ? nextProps.viewportSize.height
-      : 50,
-      opacity: nextProps.match.isExact || nextProps.menuExpanded
-      ? 0.5
-      : 0,
-      borderBottomWidth: nextProps.match.isExact || nextProps.menuExpanded
-      ? 100
-      : 5
-    }
+    const nextState = this.stateConstructor(nextProps)
     animation(
       this.animated.RootContainer,
-      ({...newState, opacity: 1}),
-      () => this.setState(newState)
+      nextState.RootContainerAni
     )
     animation(
-      this.animated.BehindContainer,
-      ({opacity: newState.opacity}),
-      () => this.setState(newState)
+      this.animated.MenuHeader,
+      nextState.MenuHeaderAni,
+      () => this.setState(nextState)
     )
   }
   render() {
     return (
       <div>
-        <BehindContainer
-          innerRef={ref => this.animated.BehindContainer = ref}
-          style={{
-            opacity: this.state.opacity,
-            ...(!this.state.opacity && {display: 'none'})
-          }}
-        />
         <RootContainer
           innerRef={ref => this.animated.RootContainer = ref}
           colorscheme={this.props.colorscheme}
           style={{
-            ...(!this.show && {overflowY: 'hidden'}),
-            height: this.state.height,
-            borderBottom: this.state.borderBottomWidth + 'px solid black',
+            ...(!this.state.show && {overflowY: 'hidden'}),
+            height: this.state.RootContainerAni.height,
+            borderBottom: this.state.RootContainerAni.borderBottomWidth + 'px solid black',
           }}
         >
           <ContentContainer>
-            <MenuHeader
-              notHome={(!this.show || this.props.menuContent !== "home")}
-            />
+            <div
+              ref={ref => this.animated.MenuHeader = ref}
+              style={{
+                overflow: 'hidden',
+                height: this.state.MenuHeaderAni.height
+              }}
+            >
+              <MenuHeader/>
+            </div>
             <div>
               {this.props.menuContent === "home"
                   ? <MenuHome/>

@@ -9,7 +9,7 @@ import AboutIcon from './about-icon-svg'
 const RootContainer = styled.div`
   display: flex;
   flex-flow: column;
-  min-height: ${props => props.viewportsize.height - 50}px;
+  min-height: ${props => props.viewportsize.height}px;
 `
 
 const Logo = styled.div`
@@ -55,7 +55,9 @@ const MenuContainer = styled.div`
 `
 
 const MenuHome = props => (
-  <RootContainer viewportsize={props.viewportsize}>
+  <RootContainer
+    viewportsize={props.viewportsize}
+  >
     <Logo>
       <div>
         Alif Faishol
