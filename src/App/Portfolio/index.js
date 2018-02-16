@@ -21,7 +21,7 @@ class Portfolio extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    if(!nextProps.onTransition) {
+    if(!this.props.items.data && !nextProps.onTransition) {
       api.getPortfolioItems()
         .then(res => {
           nextProps.loadData(res)
