@@ -1,15 +1,18 @@
 import {combineReducers} from 'redux'
 import getColorscheme from 'App/common/themes'
 
+// Action Types
 const TUTOR_TOGGLE = 'App/TUTOR_TOGGLE'
 const COLORSCHEME_SWITCH = 'App/COLORSCHEME_SWITCH'
 const VIEWPORT_SIZE_UPDATE = 'App/VIEWPORT_SIZE_UPDATE'
+const TRANSITION_STATUS_TOGGLE = 'App/TRANSITION_STATUS_TOGGLE'
 
 
+// Reducers
 const showTutor = (state=true, action) => {
   switch (action.type) {
     case TUTOR_TOGGLE:
-      return action.toBe ? action.toBe : !state
+      return action.status ? action.status : !state
     default:
       return state
   }
@@ -35,16 +38,27 @@ const colorscheme = (state=getColorscheme('light'), action) => {
   }
 }
 
+const onTransition = (state=false, action) => {
+  switch (action.type) {
+    case TRANSITION_STATUS_TOGGLE:
+      return action.status ? action.status : !state
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   showTutor,
   viewportSize,
-  colorscheme
+  colorscheme,
+  onTransition
 })
 
 
-export const toggleTutor = to => ({
+// Action Creators
+export const toggleTutor = status => ({
   type: TUTOR_TOGGLE,
-  toBe: to
+  status
 })
 
 export const updateViewportSize = () => ({
@@ -58,4 +72,9 @@ export const updateViewportSize = () => ({
 export const switchColorscheme = colorscheme => ({
   type: COLORSCHEME_SWITCH,
   colorscheme: getColorscheme(colorscheme)
+})
+
+export const toggleTransitionStatus = status => ({
+  type: TRANSITION_STATUS_TOGGLE,
+  status
 })

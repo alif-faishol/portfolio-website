@@ -1,29 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import {toggleTutor} from 'redux/modules/main'
+import {toggleTutor, toggleTransitionStatus} from 'redux/modules/main'
 import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
 import MenuContent from './MenuContent'
 import MenuHome from './MenuHome'
 
-import {TweenLite, Elastic} from 'gsap'
+import {TweenMax, Elastic} from 'gsap'
 
-const animation = (target, val, cb) => {
-  cb = cb || (() => null)
-  val = {
-    duration: 1.5,
-    ...val
-  }
-    return TweenLite
-      .to(target, val.duration, {
-        ...val,
-        onComplete() {
-          cb()
-        },
-        ease: Elastic.easeOut.config(0.25, 1)
-      })
-}
 
 const RootContainer = styled.div`
   &::-webkit-scrollbar {
@@ -62,17 +47,36 @@ class Menu extends React.Component {
     })
     this.state = this.stateConstructor(props)
     this.animated = {}
+    this.animate = (target, val, cb) => {
+      cb = cb || (() => null)
+      val = {
+        duration: 1.5,
+        ...val
+      }
+      return TweenMax
+        .to(target, val.duration, {
+          ...val,
+          onComplete() {
+            cb()
+          },
+          ease: Elastic.easeOut.config(0.25, 1)
+        })
+    }
   }
   componentWillReceiveProps(nextProps) {
     const nextState = this.stateConstructor(nextProps)
-    animation(
+    nextProps.toggleTransitionStatus(true)
+    this.animate(
       this.animated.RootContainer,
       nextState.RootContainerAni
     )
-    animation(
+    this.animate(
       this.animated.MenuHeader,
       nextState.MenuHeaderAni,
-      () => this.setState(nextState)
+      () => {
+        nextProps.toggleTransitionStatus(false)
+        this.setState(nextState)
+      }
     )
   }
   render() {
@@ -121,6 +125,9 @@ export default connect(
   dispatch => ({
     toggleTutor: () => {
       dispatch(toggleTutor())
+    },
+    toggleTransitionStatus: status => {
+      dispatch(toggleTransitionStatus(status))
     }
   })
 )(Menu)

@@ -12,16 +12,28 @@ const PortfolioItemsContainer = styled.div`
 
 class Portfolio extends React.Component {
   componentDidMount() {
+    if(!this.props.onTransition) {
     api.getPortfolioItems()
       .then(res => {
         this.props.loadData(res)
       })
       .catch(err => console.log(err))
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.onTransition) {
+      api.getPortfolioItems()
+        .then(res => {
+          nextProps.loadData(res)
+        })
+        .catch(err => console.log(err))
+    }
   }
   render() {
     return (
       <PortfolioItemsContainer>
-        {(this.props.items.data && this.props.items.data[0])
+        {(this.props.items.data
+          && this.props.items.data[0])
             ? this.props.items.data.map(item => (
               <PortfolioItem
                 key={item.id}
@@ -38,8 +50,9 @@ class Portfolio extends React.Component {
 }
 
 export default connect(
-  ({portfolio}) => ({
+  ({main, portfolio}) => ({
     items: portfolio.items,
+    onTransition: main.onTransition
   }),
   dispatch => ({
     loadData: data => dispatch(loadData(data)),
