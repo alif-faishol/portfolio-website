@@ -8,6 +8,7 @@ import PortfolioItem from 'App/Portfolio/PortfolioItem'
 const PortfolioItemsContainer = styled.div`
   display: flex;
   flex-flow: wrap;
+  justify-content: center;
 `
 
 class Portfolio extends React.Component {

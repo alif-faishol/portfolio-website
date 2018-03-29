@@ -2,13 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 const RootContainer = styled.div`
-  flex: 1 1 300px;
+  flex: 0 0 300px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
+  margin: 3%;
   & div.square {
-    box-shadow: 0 0 2px #000000;
+    box-shadow: inset 0 0 0 2px black, 3px 3px 2px 0 rgba(0, 0, 0, 0.1);
     background-size: cover;
     background-position: top;
     background-repeat: no-repeat;
