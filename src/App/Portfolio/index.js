@@ -4,6 +4,7 @@ import {loadData} from 'redux/modules/portfolio'
 import api from 'apiHandler'
 import styled from 'styled-components'
 import PortfolioItem from 'App/Portfolio/PortfolioItem'
+import Paginator from 'App/common/Paginator'
 
 const PortfolioItemsContainer = styled.div`
   display: flex;
@@ -14,11 +15,11 @@ const PortfolioItemsContainer = styled.div`
 class Portfolio extends React.Component {
   componentDidMount() {
     if(!this.props.onTransition) {
-    api.getPortfolioItems()
-      .then(res => {
-        this.props.loadData(res)
-      })
-      .catch(err => console.log(err))
+      api.getPortfolioItems()
+        .then(res => {
+          this.props.loadData(res)
+        })
+        .catch(err => console.log(err))
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -32,20 +33,27 @@ class Portfolio extends React.Component {
   }
   render() {
     return (
-      <PortfolioItemsContainer>
+      <div>
         {(this.props.items.data
           && this.props.items.data[0])
-            ? this.props.items.data.map(item => (
-              <PortfolioItem
-                key={item.id}
-                title={item.title}
-                thumbnail={item.thumbnail}
-                images={item.images}
-              />
-            ))
+            ? (
+              <div>
+                <PortfolioItemsContainer>
+                  {this.props.items.data.map(item => (
+                    <PortfolioItem
+                      key={item.id}
+                      title={item.title}
+                      thumbnail={item.thumbnail}
+                      images={item.images}
+                    />
+                  ))}
+                </PortfolioItemsContainer>
+                <Paginator/>
+              </div>
+            )
             : (<div>Loading</div>)
         }
-      </PortfolioItemsContainer>
+      </div>
     )
   }
 }
