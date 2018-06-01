@@ -14,16 +14,14 @@ const PortfolioItemsContainer = styled.div`
 
 class Portfolio extends React.Component {
   componentDidMount() {
-    if(!this.props.onTransition) {
-      api.getPortfolioItems()
-        .then(res => {
-          this.props.loadData(res)
-        })
-        .catch(err => console.log(err))
-    }
+    api.getPortfolioItems()
+      .then(res => {
+        this.props.loadData(res)
+      })
+      .catch(err => console.log(err))
   }
   componentWillReceiveProps(nextProps) {
-    if(!this.props.items.data && !nextProps.onTransition) {
+    if(this.props.match.params !== nextProps.match.params) {
       api.getPortfolioItems()
         .then(res => {
           nextProps.loadData(res)
@@ -48,7 +46,10 @@ class Portfolio extends React.Component {
                     />
                   ))}
                 </PortfolioItemsContainer>
-                <Paginator/>
+                <Paginator
+                  pages={4}
+                  active={1}
+                />
               </div>
             )
             : (<div>Loading</div>)
@@ -60,8 +61,7 @@ class Portfolio extends React.Component {
 
 export default connect(
   ({main, portfolio}) => ({
-    items: portfolio.items,
-    onTransition: main.onTransition
+    items: portfolio.items
   }),
   dispatch => ({
     loadData: data => dispatch(loadData(data)),

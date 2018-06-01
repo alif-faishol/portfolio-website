@@ -34,6 +34,7 @@ const App = props => (
       <Route path='/' component={Menu} />
       <PageContainer>
         <Route
+          exact
           path='/portfolio'
           render={props =>
               <MainRouteContainer {...props} children={Portfolio}/>
