@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -10,6 +11,10 @@ const Container = styled.div`
   height: 50px;
   text-align: center;
   line-height: 50px;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `
 
 const Button = styled.div`
@@ -26,14 +31,19 @@ const Button = styled.div`
   }
 `
 
+const nextPage = (page, total) => page <= total ? page : total
+const prevPage = (page) => page !== 0 ? page : 1
+
 const Paginator = props => (
   <Container>
-    <Button
-      active={props.active !== 1}
-      colorscheme={props.colorscheme}
-    >
-      prev
-    </Button>
+    <Link to={props.baseUrl + prevPage((parseInt(props.active, 10) - 1))}>
+      <Button
+        active={parseInt(props.active, 10) !== 1}
+        colorscheme={props.colorscheme}
+      >
+        prev
+      </Button>
+    </Link>
     <div
       style={{
         fontSize: '20px'
@@ -41,12 +51,14 @@ const Paginator = props => (
     >
       {props.active} / {props.pages}
     </div>
-    <Button
-      active={props.active !== props.pages}
-      colorscheme={props.colorscheme}
-    >
-      next
-    </Button>
+    <Link to={props.baseUrl + nextPage((parseInt(props.active, 10) + 1), props.pages)}>
+      <Button
+        active={parseInt(props.active, 10) !== parseInt(props.pages, 10)}
+        colorscheme={props.colorscheme}
+      >
+        next
+      </Button>
+    </Link>
   </Container>
 )
 

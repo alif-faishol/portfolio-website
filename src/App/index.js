@@ -35,7 +35,7 @@ const App = props => (
       <PageContainer>
         <Route
           exact
-          path='/portfolio'
+          path='/portfolio/:page?'
           render={props =>
               <MainRouteContainer {...props} children={Portfolio}/>
           }

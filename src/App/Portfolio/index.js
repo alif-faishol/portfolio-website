@@ -14,7 +14,9 @@ const PortfolioItemsContainer = styled.div`
 
 class Portfolio extends React.Component {
   componentDidMount() {
-    api.getPortfolioItems()
+    api.getPortfolioItems({
+      page:this.props.match.params.page ? this.props.match.params.page : 1
+    })
       .then(res => {
         this.props.loadData(res)
       })
@@ -22,7 +24,9 @@ class Portfolio extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if(this.props.match.params !== nextProps.match.params) {
-      api.getPortfolioItems()
+      api.getPortfolioItems({
+        page:nextProps.match.params.page ? nextProps.match.params.page : 1
+      })
         .then(res => {
           nextProps.loadData(res)
         })
@@ -47,8 +51,9 @@ class Portfolio extends React.Component {
                   ))}
                 </PortfolioItemsContainer>
                 <Paginator
-                  pages={4}
-                  active={1}
+                  pages={this.props.items.meta.totalPage}
+                  active={this.props.match.params.page || 1}
+                  baseUrl={'/portfolio/'}
                 />
               </div>
             )
