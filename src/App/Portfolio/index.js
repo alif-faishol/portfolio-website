@@ -51,8 +51,8 @@ class Portfolio extends React.Component {
                   ))}
                 </PortfolioItemsContainer>
                 <Paginator
-                  pages={this.props.items.meta.totalPage}
-                  active={this.props.match.params.page || 1}
+                  totalPage={this.props.items.meta.totalPage}
+                  activePage={this.props.match.params.page || 1}
                   baseUrl={'/portfolio/'}
                 />
               </div>

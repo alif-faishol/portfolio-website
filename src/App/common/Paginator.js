@@ -31,39 +31,69 @@ const Button = styled.div`
   }
 `
 
-const nextPage = (page, total) => page <= total ? page : total
-const prevPage = (page) => page !== 0 ? page : 1
-
-const Paginator = props => (
-  <Container>
-    <Link to={props.baseUrl + prevPage((parseInt(props.active, 10) - 1))}>
+const PrevBtn = props => (
+  props.activePage - 1 !== 0 ?
+    (<Link to={props.baseUrl + (props.activePage - 1)}>
       <Button
-        active={parseInt(props.active, 10) !== 1}
+        active={true}
         colorscheme={props.colorscheme}
       >
         prev
       </Button>
-    </Link>
+    </Link>)
+  :
+    (<Button
+      active={false}
+      colorscheme={props.colorscheme}
+    >
+      prev
+    </Button>)
+)
+
+const NextBtn = props => (
+  props.activePage + 1 <= props.totalPage ?
+    (<Link to={props.baseUrl + (props.activePage + 1)}>
+      <Button
+        active={true}
+        colorscheme={props.colorscheme}
+      >
+        next
+      </Button>
+    </Link>)
+    :
+    (<Button
+      active={false}
+      colorscheme={props.colorscheme}
+    >
+      next
+    </Button>)
+)
+
+const Paginator = props => (
+  <Container>
+    <PrevBtn
+      activePage={parseInt(props.activePage, 10)}
+      baseUrl={props.baseUrl}
+      colorscheme={props.colorscheme}
+    />
     <div
       style={{
         fontSize: '20px'
       }}
     >
-      {props.active} / {props.pages}
+      {props.activePage} / {props.totalPage}
     </div>
-    <Link to={props.baseUrl + nextPage((parseInt(props.active, 10) + 1), props.pages)}>
-      <Button
-        active={parseInt(props.active, 10) !== parseInt(props.pages, 10)}
-        colorscheme={props.colorscheme}
-      >
-        next
-      </Button>
-    </Link>
+    <NextBtn
+      totalPage={parseInt(props.totalPage, 10)}
+      activePage={parseInt(props.activePage, 10)}
+      baseUrl={props.baseUrl}
+      colorscheme={props.colorscheme}
+    />
   </Container>
 )
 
 export default connect(
-  ({main}) => ({
+  ({ main }) => ({
     colorscheme: main.colorscheme
   })
 )(Paginator)
