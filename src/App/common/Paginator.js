@@ -33,7 +33,10 @@ const Button = styled.div`
 
 const PrevBtn = props => (
   props.activePage - 1 !== 0 ?
-    (<Link to={props.baseUrl + (props.activePage - 1)}>
+    (<Link
+      to={props.baseUrl + (props.activePage - 1)}
+      onClick={window.scroll({top: 0})}
+    >
       <Button
         active={true}
         colorscheme={props.colorscheme}
@@ -52,7 +55,10 @@ const PrevBtn = props => (
 
 const NextBtn = props => (
   props.activePage + 1 <= props.totalPage ?
-    (<Link to={props.baseUrl + (props.activePage + 1)}>
+    (<Link
+      to={props.baseUrl + (props.activePage + 1)}
+      onClick={window.scroll({top: 0})}
+    >
       <Button
         active={true}
         colorscheme={props.colorscheme}
