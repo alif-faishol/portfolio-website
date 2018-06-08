@@ -4,12 +4,24 @@ import {loadData, toggleLoading} from 'redux/modules/portfolio'
 import api from 'apiHandler'
 import styled from 'styled-components'
 import PortfolioItem from 'App/Portfolio/PortfolioItem'
+import Loading from 'App/common/animation/Loading'
 import Paginator from 'App/common/Paginator'
 
 const PortfolioItemsContainer = styled.div`
   display: flex;
   flex-flow: wrap;
   justify-content: center;
+`
+
+const Centered = styled.div`
+  margin-top: ${props => props.viewportSize.height/2-100-50}px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 class Portfolio extends React.Component {
@@ -36,10 +48,17 @@ class Portfolio extends React.Component {
         .catch(err => console.log(err))
     }
   }
+  componentWillUnmount() {
+    this.props.toggleLoading(true)
+  }
   render() {
     return (
       (this.props.loading
-        ? (<div>Loading</div>)
+        ? (
+          <Centered viewportSize={this.props.viewportSize}>
+            <Loading/>
+          </Centered>
+        )
         : (
           <div>
             <PortfolioItemsContainer>
@@ -66,6 +85,7 @@ class Portfolio extends React.Component {
 
 export default connect(
   ({main, portfolio}) => ({
+    viewportSize: main.viewportSize,
     items: portfolio.items,
     loading: portfolio.loading
   }),
