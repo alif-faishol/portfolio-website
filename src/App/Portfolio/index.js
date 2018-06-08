@@ -26,6 +26,7 @@ const Centered = styled.div`
 
 class Portfolio extends React.Component {
   componentDidMount() {
+    console.log("didMount")
     api.getPortfolioItems({
       page:this.props.match.params.page ? this.props.match.params.page : 1
     })
@@ -37,6 +38,7 @@ class Portfolio extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if(this.props.match.params !== nextProps.match.params) {
+    console.log("receiveProps")
       this.props.toggleLoading(true)
       api.getPortfolioItems({
         page:nextProps.match.params.page ? nextProps.match.params.page : 1

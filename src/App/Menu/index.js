@@ -7,9 +7,7 @@ import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
 import MenuContent from './MenuContent'
 import MenuHome from './MenuHome'
-
-import {TweenMax, Elastic} from 'gsap'
-
+import {TweenMax, Power3} from 'gsap'
 
 const RootContainer = styled.div`
   &::-webkit-scrollbar {
@@ -49,7 +47,7 @@ class Menu extends React.Component {
     this.animate = (target, val, cb) => {
       cb = cb || (() => null)
       val = {
-        duration: 1.5,
+        duration: 0.75,
         ...val
       }
       return TweenMax
@@ -58,7 +56,7 @@ class Menu extends React.Component {
           onComplete() {
             cb()
           },
-          ease: Elastic.easeOut.config(0.25, 1)
+          ease: Power3.easeOut
         })
     }
   }

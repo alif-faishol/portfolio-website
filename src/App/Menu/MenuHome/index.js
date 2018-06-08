@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import {toggleMenu} from 'redux/modules/menu'
 import PortfolioIcon from './portfolio-icon-svg'
 import CVIcon from './cv-icon-svg'
 import AboutIcon from './about-icon-svg'
@@ -65,15 +66,27 @@ const MenuHome = props => (
       <div className='small'>WEB DEVELOPER &amp; GRAPHIC DESIGNER</div>
     </Logo>
     <MenuContainer hoverColor={props.colorscheme.highlight}>
-      <Menus to='/portfolio' color={props.colorscheme.accent2}>
+      <Menus
+        to='/portfolio'
+        color={props.colorscheme.accent2}
+        onClick={() => props.toggleMenu(false)}
+      >
         <PortfolioIcon/>
         <div>Portfolio</div>
       </Menus>
-      <Menus to='/cv' color={props.colorscheme.accent1}>
+      <Menus
+        to='/cv'
+        color={props.colorscheme.accent1}
+        onClick={() => props.toggleMenu(false)}
+      >
         <CVIcon/>
         <div>CV</div>
       </Menus>
-      <Menus to='/about' color={props.colorscheme.accent3}>
+      <Menus
+        to='/about'
+        color={props.colorscheme.accent3}
+        onClick={() => props.toggleMenu(false)}
+      >
         <AboutIcon/>
         <div>About</div>
       </Menus>
@@ -85,5 +98,8 @@ export default connect(
   ({main}) => ({
     viewportsize: main.viewportSize,
     colorscheme: main.colorscheme
+  }),
+  dispatch => ({
+    toggleMenu: status => dispatch(toggleMenu(status))
   })
 )(MenuHome)
