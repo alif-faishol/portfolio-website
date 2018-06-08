@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {toggleTutor, toggleTransitionStatus} from 'redux/modules/main'
+import {toggleMenu} from 'redux/modules/menu'
 import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
 import MenuContent from './MenuContent'
@@ -29,7 +30,6 @@ class Menu extends React.Component {
   constructor(props) {
     super(props)
     this.stateConstructor = props => ({
-      show: props.match.isExact || props.menuExpanded,
       RootContainerAni: {
         height: props.match.isExact || props.menuExpanded
         ? props.viewportSize.height
@@ -42,7 +42,6 @@ class Menu extends React.Component {
         height: props.match.isExact || props.menuExpanded
         ? 0
         : 50,
-
       }
     })
     this.state = this.stateConstructor(props)
@@ -63,21 +62,28 @@ class Menu extends React.Component {
         })
     }
   }
+  componentDidMount() {
+    if(this.props.match.isExact) {
+      this.props.toggleMenu(true)
+    }
+  }
   componentWillReceiveProps(nextProps) {
-    const nextState = this.stateConstructor(nextProps)
-    nextProps.toggleTransitionStatus(true)
-    this.animate(
-      this.animated.RootContainer,
-      nextState.RootContainerAni
-    )
-    this.animate(
-      this.animated.MenuHeader,
-      nextState.MenuHeaderAni,
-      () => {
-        nextProps.toggleTransitionStatus(false)
-        this.setState(nextState)
-      }
-    )
+    if(nextProps.menuExpanded !== this.props.menuExpanded) {
+      const nextState = this.stateConstructor(nextProps)
+      nextProps.toggleTransitionStatus(true)
+      this.animate(
+        this.animated.RootContainer,
+        nextState.RootContainerAni
+      )
+      this.animate(
+        this.animated.MenuHeader,
+        nextState.MenuHeaderAni,
+        () => {
+          nextProps.toggleTransitionStatus(false)
+          this.setState(nextState)
+        }
+      )
+    }
   }
   render() {
     return (
@@ -86,7 +92,7 @@ class Menu extends React.Component {
           innerRef={ref => this.animated.RootContainer = ref}
           colorscheme={this.props.colorscheme}
           style={{
-            ...(!this.state.show && {overflowY: 'hidden'}),
+            ...(!this.props.menuExpanded && {overflowY: 'hidden'}),
             height: this.state.RootContainerAni.height,
             borderBottom: this.state.RootContainerAni.borderBottomWidth + 'px solid black',
           }}
@@ -128,6 +134,9 @@ export default connect(
     },
     toggleTransitionStatus: status => {
       dispatch(toggleTransitionStatus(status))
+    },
+    toggleMenu: status => {
+      dispatch(toggleMenu(status))
     }
   })
 )(Menu)

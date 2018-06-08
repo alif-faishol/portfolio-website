@@ -7,7 +7,7 @@ const MENU_CONTENT_CHANGE = 'App/Menu/MENU_CONTENT_CHANGE'
 const menuExpanded = (state=false, action) => {
   switch (action.type) {
     case MENU_TOGGLE:
-      return action.toBe ? action.toBe : !state
+      return action.toBe !== undefined ? action.toBe : !state
     default:
       return state
   }
