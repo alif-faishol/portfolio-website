@@ -14,7 +14,7 @@ const RootContainer = styled.div`
 `
 
 const Logo = styled.div`
-  flex: 5 0 200px;
+  flex: 9 0 200px;
   display: flex;
   font-size: 50px;
   flex-flow: column;
@@ -28,8 +28,9 @@ const Logo = styled.div`
   }
 `
 
-const Menus = styled(Link)`
-  flex: 1 0 0;
+const Menu = styled(Link)`
+  flex: 0 1 200px;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,7 +38,7 @@ const Menus = styled(Link)`
   text-decoration: none;
   & svg {
     fill: ${props => props.color};
-    width: 40px;
+    width: 20%;
   }
   & div {
     text-transform: uppercase;
@@ -45,12 +46,23 @@ const Menus = styled(Link)`
     font-size: 13px;
     margin-top: 20px;
   }
+  @media screen and (max-width: 640px) {
+    flex: 0 1 100px;
+    height: 100px;
+    & svg {
+      width: 30%;
+    }
+    & div {
+      font-size: 12px;
+    }
+  }
 `
 
 const MenuContainer = styled.div`
   display: flex; 
-  flex: 2 0 200px;
-  & ${Menus}:hover {
+  flex: 1 0 auto;
+  justify-content: space-around;
+  & ${Menu}:hover {
     background-color: ${props => props.hoverColor};
   }
 `
@@ -66,30 +78,30 @@ const MenuHome = props => (
       <div className='small'>WEB DEVELOPER &amp; GRAPHIC DESIGNER</div>
     </Logo>
     <MenuContainer hoverColor={props.colorscheme.highlight}>
-      <Menus
+      <Menu
         to='/portfolio'
         color={props.colorscheme.accent2}
         onClick={() => props.toggleMenu(false)}
       >
         <PortfolioIcon/>
         <div>Portfolio</div>
-      </Menus>
-      <Menus
+      </Menu>
+      <Menu
         to='/cv'
         color={props.colorscheme.accent1}
         onClick={() => props.toggleMenu(false)}
       >
         <CVIcon/>
         <div>CV</div>
-      </Menus>
-      <Menus
+      </Menu>
+      <Menu
         to='/about'
         color={props.colorscheme.accent3}
         onClick={() => props.toggleMenu(false)}
       >
         <AboutIcon/>
         <div>About</div>
-      </Menus>
+      </Menu>
     </MenuContainer>
   </RootContainer>
 )

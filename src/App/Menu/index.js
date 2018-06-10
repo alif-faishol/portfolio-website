@@ -10,15 +10,10 @@ import MenuHome from './MenuHome'
 import {TweenMax, Power3} from 'gsap'
 
 const RootContainer = styled.div`
-  &::-webkit-scrollbar {
-    width: 0;
-  }
   z-index: 100;
--ms-overflow-style: none;
   position: fixed;
   width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   bottom: 0;
   top: 0;
   background-color: ${props => props.colorscheme.menuBG};
@@ -70,7 +65,10 @@ class Menu extends React.Component {
       && !nextProps.menuExpanded
       && nextProps.toggleMenu(true)
 
-    if(nextProps.menuExpanded !== this.props.menuExpanded) {
+    if(
+      (nextProps.menuExpanded !== this.props.menuExpanded)
+      || (nextProps.viewportSize !== this.props.viewportSize)
+    ) {
       const nextState = this.stateConstructor(nextProps)
       nextProps.toggleTransitionStatus(true)
       this.animate(
@@ -97,6 +95,7 @@ class Menu extends React.Component {
             ...(!this.props.menuExpanded && {overflowY: 'hidden'}),
             height: this.state.RootContainerAni.height,
             borderBottom: this.state.RootContainerAni.borderBottomWidth + 'px solid black',
+            boxShadow: '3px 3px 2px 0 rgba(0, 0, 0, 0.1)'
           }}
         >
           <ContentContainer>
