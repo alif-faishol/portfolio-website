@@ -41,7 +41,7 @@ const colorscheme = (state=getColorscheme('light'), action) => {
 const onTransition = (state=false, action) => {
   switch (action.type) {
     case TRANSITION_STATUS_TOGGLE:
-      return action.status ? action.status : !state
+      return action.status !== undefined ? action.status : !state
     default:
       return state
   }
