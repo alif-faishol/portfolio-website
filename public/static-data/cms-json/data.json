@@ -138,6 +138,22 @@
         "WooCommerce",
         "VIM"
       ]
+    },
+    {
+      "name": "Insantama PV",
+      "images": [
+        "/images/Insantama_PV.jpg"
+      ],
+      "body": "Promotional Explainer Video for new branch of insantama.",
+      "skill_type": [],
+      "tools_used": [
+        "Illustrator",
+        "After Effects",
+        "Photoshop"
+      ],
+      "videos": [
+        "https://drive.google.com/file/d/1lI0_fdDAQhOcGn90GCyau1E1e5iyeu8o/preview"
+      ]
     }
   ]
 }

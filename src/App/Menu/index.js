@@ -61,11 +61,15 @@ class Menu extends React.Component {
     }
   }
   componentDidMount() {
-    if(this.props.match.isExact) {
-      this.props.toggleMenu(true)
-    }
+    this.props.match.isExact
+      && !this.props.menuExpanded
+      && this.props.toggleMenu(true)
   }
   componentWillReceiveProps(nextProps) {
+    nextProps.match.isExact
+      && !nextProps.menuExpanded
+      && nextProps.toggleMenu(true)
+
     if(nextProps.menuExpanded !== this.props.menuExpanded) {
       const nextState = this.stateConstructor(nextProps)
       nextProps.toggleTransitionStatus(true)

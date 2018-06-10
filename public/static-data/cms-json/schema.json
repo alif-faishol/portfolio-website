@@ -38,6 +38,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "videos": {
+            "type": "array",
+            "title": "Videos",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

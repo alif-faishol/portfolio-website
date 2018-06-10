@@ -16,16 +16,21 @@ const Centered = styled.div`
   align-items: center;
 `
 
-const MainRouteContainer = props => (
-  props.onTransition && !props.menuExpanded
-  ? (<Centered viewportSize={props.viewportSize}>
-    <Loading/>
-  </Centered>)
-  : (
-    <ContentContainer>
-      <props.children {...props}/>
-    </ContentContainer>)
-)
+class MainRouteContainer extends React.Component {
+  componentDidMount() {
+    this.props.menuExpanded && this.props.toggleMenu(false)
+  }
+  render() {
+    return this.props.onTransition || this.props.menuExpanded
+      ? (<Centered viewportSize={this.props.viewportSize}>
+        <Loading/>
+      </Centered>)
+      : (
+        <ContentContainer>
+          <this.props.children {...this.props}/>
+        </ContentContainer>)
+  }
+}
 
 export default connect(
   ({main, menu}) => ({
