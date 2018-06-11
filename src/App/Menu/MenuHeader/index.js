@@ -4,71 +4,64 @@ import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 import {toggleMenu} from 'redux/modules/menu'
 import {changeMenuContent} from 'redux/modules/menu'
+import Button from 'App/common/styles/Button'
 
 const RootContainer = styled.div`
   width: 100%;
+  justify-content: space-between;
   display: flex;
   height: 50px;
   font-size: 20px;
   align-items: center;
 `
 
-const BackBtn = styled(Link)`
-  height: 50px;
-  width: 30%;
+const Column = styled.div`
   display: flex;
-  flex-grow: 1;
-  align-items: center;
-  text-decoration: none;
+  flex: 1 0 100px;
 `
 
-const LogoAF = styled.div`
-  height: 50px;
-  width: 40%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  @media (max-width: 500px) {
-    display: none;
-  }
-`
-
-const MenuToggleBtn = styled.div`
-  height: 50px;
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  justify-content: flex-end;
-  text-align: right;
-  width: 30%;
-`
 const ClosedMenu = props => (
   <RootContainer>
-    <BackBtn
-      to='/'
-      onClick={() => {
-        props.changeMenuContent("home")
-        props.toggleMenu(true)
-      }}
-    >
-      HOME
-    </BackBtn>
-    <LogoAF innerRef={ref => {this.LogoAF = ref}}>
-      Alif Faishol
-    </LogoAF>
-    <MenuToggleBtn
-      onClick={() => {
-        props.changeMenuContent("navigation")
-        props.toggleMenu()
-      }}
-    >
-      MENU
-    </MenuToggleBtn>
+    <Column>
+      <Link
+        to='/'
+        onClick={() => {
+          props.changeMenuContent("home")
+          props.toggleMenu(true)
+        }}
+      >
+        <Button>
+          Home
+        </Button>
+      </Link>
+    </Column>
+    <Column style={{flexGrow: 9}}>
+      <span style={{margin: '0 auto'}}>
+        {props.title}
+      </span>
+    </Column>
+    <Column>
+      <Button
+        onClick={() => {
+          props.changeMenuContent("dynamicMenu")
+          props.toggleMenu()
+        }}
+        style={{
+          marginLeft: 'auto'
+        }}
+      >
+        {props.dynamicMenu.name}
+      </Button>
+    </Column>
   </RootContainer>
 )
 
 
-export default connect(null,
+export default connect(
+  ({menu}) => ({
+    dynamicMenu: menu.dynamicMenu,
+    title: menu.title
+  }),
   dispatch => ({
     toggleMenu: () => {
       dispatch(toggleMenu())

@@ -5,7 +5,7 @@ import {toggleTutor, toggleTransitionStatus} from 'redux/modules/main'
 import {toggleMenu} from 'redux/modules/menu'
 import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
-import MenuContent from './MenuContent'
+import DynamicMenu from './DynamicMenu'
 import MenuHome from './MenuHome'
 import {TweenMax, Power3} from 'gsap'
 
@@ -22,21 +22,30 @@ const RootContainer = styled.div`
 class Menu extends React.Component {
   constructor(props) {
     super(props)
-    this.stateConstructor = props => ({
-      RootContainerAni: {
-        height: props.match.isExact || props.menuExpanded
-        ? props.viewportSize.height
-        : 50,
-        borderBottomWidth: props.match.isExact || props.menuExpanded
-        ? 100
-        : 5
-      },
-      MenuHeaderAni: {
-        height: props.match.isExact || props.menuExpanded
-        ? 0
-        : 50,
+    this.stateConstructor = props => (
+      props.menuContent === "home"
+      ? {
+        RootContainerAni: {
+          height: props.match.isExact || props.menuExpanded
+          ? props.viewportSize.height : 50,
+          borderBottomWidth: props.match.isExact || props.menuExpanded
+          ? 100 : 5
+        },
+        MenuHeaderAni: {
+          height: props.match.isExact || props.menuExpanded
+          ? 0 : 50,
+        }
       }
-    })
+      : {
+        RootContainerAni: {
+          height: props.menuExpanded ? 100 : 50,
+          borderBottomWidth: 5,
+        },
+        MenuHeaderAni: {
+          height: props.menuExpanded ? 0 : 50,
+        }
+      }
+    )
     this.state = this.stateConstructor(props)
     this.animated = {}
     this.animate = (target, val, cb) => {
@@ -67,7 +76,7 @@ class Menu extends React.Component {
 
     if(
       (nextProps.menuExpanded !== this.props.menuExpanded)
-      || (nextProps.viewportSize !== this.props.viewportSize)
+      || (nextProps.menuExpanded && nextProps.viewportSize !== this.props.viewportSize)
     ) {
       const nextState = this.stateConstructor(nextProps)
       nextProps.toggleTransitionStatus(true)
@@ -108,12 +117,10 @@ class Menu extends React.Component {
             >
               <MenuHeader/>
             </div>
-            <div>
-              {this.props.menuContent === "home"
-                  ? <MenuHome/>
-                  : <MenuContent/>
-              }
-            </div>
+            {this.props.menuContent === "home"
+                ? <MenuHome/>
+                : <DynamicMenu/>
+            }
           </ContentContainer>
         </RootContainer>
       </div>

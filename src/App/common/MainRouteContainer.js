@@ -21,7 +21,10 @@ class MainRouteContainer extends React.Component {
     this.props.menuExpanded && this.props.toggleMenu(false)
   }
   render() {
-    return this.props.onTransition || this.props.menuExpanded
+    return this.props.menuContent === "home" 
+      && (
+        this.props.onTransition || this.props.menuExpanded
+      )
       ? (<Centered viewportSize={this.props.viewportSize}>
         <Loading/>
       </Centered>)
@@ -36,6 +39,7 @@ export default connect(
   ({main, menu}) => ({
     viewportSize: main.viewportSize,
     menuExpanded: menu.menuExpanded,
+    menuContent: menu.menuContent,
     onTransition: main.onTransition
   }),
   dispatch => ({
