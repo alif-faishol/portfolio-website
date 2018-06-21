@@ -18,11 +18,9 @@ const getPortfolioItems = (args) => {
       )
 
       const filterer = item => {
-        if(args.filter !== undefined) {
-          return args.filter.indexOf(item.category) !== -1
-        } else {
-          return true
-        }
+        return args.filter[item.category] !== undefined
+          ? args.filter[item.category]
+          : true
       }
 
       const dataObj = (

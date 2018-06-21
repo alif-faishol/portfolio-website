@@ -1,14 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
-import queryString from 'query-string'
-import {loadData, toggleLoading, changeFilter} from 'redux/modules/portfolio'
+import {loadData, toggleLoading} from 'redux/modules/portfolio'
 import {confDynamicMenu, confTitle} from 'redux/modules/menu'
 import api from 'apiHandler'
 import styled from 'styled-components'
 import PortfolioItem from 'App/Portfolio/PortfolioItem'
 import Loading from 'App/common/animation/Loading'
 import Paginator from 'App/common/Paginator'
+import {DynamicMenuBtn, DynamicMenuContent} from 'App/Portfolio/DynamicMenu'
 
 const PortfolioItemsContainer = styled.div`
   display: flex;
@@ -27,73 +26,10 @@ const Centered = styled.div`
   align-items: center;
 `
 
-const DynamicMenuBtn = () => (
-  <div
-    style={{
-      padding: '8px 8px 4px 8px',
-      borderRadius: '5px',
-      color: 'white',
-      backgroundColor: 'black',
-    }}
-  >
-    Filter
-  </div>
-)
-
-const DynamicMenuContent = props => {
-
-  const Checkbox = connect(
-    ({portfolio}) => ({
-      filter: portfolio.filter
-    }),
-    dispatch => ({
-      changeFilter: filter => dispatch(changeFilter(filter))
-    })
-  )(props => {
-    const changeHandler = event => {
-      props.changeFilter({
-        [props.id]: event.target.checked
-      })
-    }
-    return (
-      <label>
-        {props.name}
-        <input
-          name={props.id}
-          type='checkbox'
-          checked={
-            props.filter[props.id] || props.filter[props.id] === undefined
-              ? true
-              : false
-          }
-          onChange={changeHandler}
-        />
-      </label>
-    )
-  })
-
-  const Submit = withRouter(({history}) => (
-        <button
-          onClick={history.push('/portfolio/?filter=')}
-        >
-          haha
-        </button>
-      ))
-
-  return (
-    <div>
-      <Checkbox name="Motion Graphics" id={1}/>
-      <Checkbox name="Design Graphics" id={2}/>
-      <Checkbox name="Web Development" id={3}/>
-      <Submit/>
-    </div>
-  )
-}
-
 class Portfolio extends React.Component {
   componentDidMount() {
     api.getPortfolioItems({
-      page:this.props.match.params.page ? this.props.match.params.page : 1
+      page: this.props.match.params.page ? this.props.match.params.page : 1
     })
       .then(res => {
         this.props.loadData(res)
@@ -110,10 +46,14 @@ class Portfolio extends React.Component {
     })
   }
   componentWillReceiveProps(nextProps) {
+    if(this.props.filter !== nextProps.filter) {
+      this.props.history.push('/portfolio')
+    }
     if(this.props.match.params !== nextProps.match.params) {
       this.props.toggleLoading(true)
       api.getPortfolioItems({
-        page:nextProps.match.params.page ? nextProps.match.params.page : 1
+        page: nextProps.match.params.page ? nextProps.match.params.page : 1,
+        filter: nextProps.filter
       })
         .then(res => {
           nextProps.loadData(res)
@@ -163,6 +103,7 @@ export default connect(
   ({main, portfolio}) => ({
     viewportSize: main.viewportSize,
     items: portfolio.items,
+    filter: portfolio.filter,
     loading: portfolio.loading
   }),
   dispatch => ({
