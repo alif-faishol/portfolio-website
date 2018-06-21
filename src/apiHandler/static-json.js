@@ -11,11 +11,15 @@ const getPortfolioItems = (args) => {
 
     const resolved = data => {
 
-      const sorter = (a, b) => (
-        a[args.sortBy] < b[args.sortBy]
+      const sorter = (a, b) => {
+        const check = () => (a[args.sortBy] < b[args.sortBy]
         ? -1
         : (a[args.sortBy] > b[args.sortBy] ? 1 : 0)
-      )
+        )
+        return args.sort === 'ASC'
+        ? check()
+        : -check()
+      }
 
       const filterer = item => {
         return args.filter[item.category] !== undefined
@@ -48,7 +52,7 @@ const getPortfolioItems = (args) => {
           .sort(sorter)
           .splice(
             args.perPage*(args.page-1),
-            args.perPage*args.page
+            args.perPage
           )
         )
       }

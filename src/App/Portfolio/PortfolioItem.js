@@ -7,6 +7,7 @@ const RootContainer = styled.div`
   display: flex;
   flex-flow: column;
   margin: 3%;
+  cursor: pointer;
   & div.category {
     display: inline-block;
     font-size: 15px;

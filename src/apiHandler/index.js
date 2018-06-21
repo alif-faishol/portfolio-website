@@ -5,8 +5,8 @@ const apiProvider = json
 export default {
   getPortfolioItems: (args) => {
     let defaultArgs = {
-      sort: 'ASC',
-      sortBy: 'title',
+      sort: 'DESC',
+      sortBy: 'category',
       perPage: 6,
       filter: {},
       page: 1
