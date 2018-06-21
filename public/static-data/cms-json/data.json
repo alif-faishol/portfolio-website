@@ -6,12 +6,10 @@
       "images": [
         "/images/HeadBurst.png"
       ],
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of Doorable",
@@ -20,12 +18,10 @@
         "/images/Doorable1.jpg"
       ],
       "body": "Rejected logo that was submitted for design contest.",
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of Lucas KT Lee",
@@ -33,12 +29,10 @@
         "/images/LKL.png"
       ],
       "body": "Rejected logo that was submitted for design contest.",
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of Curtis Miller Insurance",
@@ -47,12 +41,10 @@
         "/images/CMI1.png"
       ],
       "body": "Rejected logo that was submitted for design contest.",
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of ICHI",
@@ -60,12 +52,10 @@
         "/images/ICHI.jpg"
       ],
       "body": "Rejected logo that was submitted for design contest.",
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of Ombudsman",
@@ -73,12 +63,10 @@
         "/images/ombudsman.png"
       ],
       "body": "Rejected logo that was submitted for design contest.",
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of Germas",
@@ -86,12 +74,10 @@
       "images": [
         "/images/Germas.png"
       ],
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of IWFD",
@@ -102,12 +88,10 @@
         "/images/IWFD3.png"
       ],
       "body": "Rejected logo that was submitted for design contest.",
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "Logo of Zeppelin Freight",
@@ -116,12 +100,10 @@
         "/images/Zeppelin%20Freight1.jpg"
       ],
       "body": "Rejected logo that was submitted for design contest.",
-      "skill_type": [
-        "Graphic Design"
-      ],
       "tools_used": [
         "Illustrator"
-      ]
+      ],
+      "category": "Graphic Design"
     },
     {
       "name": "GDM Distributor Website",
@@ -130,14 +112,12 @@
         "/images/gdmbandung1.png"
       ],
       "body": "WooCommerce compatible WordPress template, a product catalog website.",
-      "skill_type": [
-        "Web Design"
-      ],
       "tools_used": [
         "WordPress",
         "WooCommerce",
         "VIM"
-      ]
+      ],
+      "category": "Web Development"
     },
     {
       "name": "Insantama PV",
@@ -145,7 +125,6 @@
         "/images/Insantama_PV.jpg"
       ],
       "body": "Promotional Explainer Video for new branch of insantama.",
-      "skill_type": [],
       "tools_used": [
         "Illustrator",
         "After Effects",
@@ -153,7 +132,8 @@
       ],
       "videos": [
         "https://drive.google.com/file/d/1lI0_fdDAQhOcGn90GCyau1E1e5iyeu8o/preview"
-      ]
+      ],
+      "category": "Motion Graphics"
     }
   ]
 }

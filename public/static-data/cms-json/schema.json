@@ -25,13 +25,6 @@
             "title": "Body",
             "format": "markdown"
           },
-          "skill_type": {
-            "type": "array",
-            "title": "Skill Type",
-            "items": {
-              "type": "string"
-            }
-          },
           "tools_used": {
             "type": "array",
             "title": "Tools Used",
@@ -45,6 +38,10 @@
             "items": {
               "type": "string"
             }
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
           }
         }
       }

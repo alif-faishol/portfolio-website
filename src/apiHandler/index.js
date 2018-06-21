@@ -8,6 +8,7 @@ export default {
       sort: 'ASC',
       sortBy: 'title',
       perPage: 6,
+      filter: undefined,
       page: 1
     }
     return apiProvider.getPortfolioItems({...defaultArgs, ...args})

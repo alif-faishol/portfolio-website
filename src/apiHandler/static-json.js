@@ -10,23 +10,35 @@ const getPortfolioItems = (args) => {
     xhr.send();
 
     const resolved = data => {
+
+      const sorter = (a, b) => (
+        a[args.sortBy] < b[args.sortBy]
+        ? -1
+        : (a[args.sortBy] > b[args.sortBy] ? 1 : 0)
+      )
+
+      const filterer = item => {
+        if(args.filter !== undefined) {
+          return args.filter.indexOf(item.category) !== -1
+        } else {
+          return true
+        }
+      }
+
       const dataObj = (
         JSON.parse(data).portfolio.map(
           (item, index) => ({
             id: index,
             title: item.name,
             thumbnail: root + item.images[0],
+            category: item.category,
             images: item.images.map(item => (
               root + item
             ))
           })
         )
-      )
-      const sorter = (a, b) => (
-        a[args.sortBy] < b[args.sortBy]
-        ? -1
-        : (a[args.sortBy] > b[args.sortBy] ? 1 : 0)
-      )
+      ).filter(filterer)
+
       return {
         meta: {
           totalData: dataObj.length,
