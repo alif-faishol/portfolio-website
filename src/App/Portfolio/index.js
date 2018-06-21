@@ -84,6 +84,7 @@ class Portfolio extends React.Component {
                   title={item.title}
                   thumbnail={item.thumbnail}
                   images={item.images}
+                  category={item.category}
                 />
               ))}
             </PortfolioItemsContainer>
