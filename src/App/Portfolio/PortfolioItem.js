@@ -14,7 +14,6 @@ const RootContainer = styled.div`
     padding: 5px;
     margin-right: auto;
     background-color: ${props => props.color};
-    cursor: pointer;
   }
   & div.square {
     box-shadow: inset 0 0 0 2px black, 3px 3px 2px 0 rgba(0, 0, 0, 0.1);
@@ -39,6 +38,7 @@ const PortfolioItem = props => (
         : (props.category === "Motion Graphics"
         ? 'accent2' : 'accent3') 
     ]}
+    onClick={props.onClick}
   >
     <div
       className='category'

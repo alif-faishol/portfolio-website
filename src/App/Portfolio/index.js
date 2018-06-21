@@ -1,12 +1,18 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {loadData, toggleLoading} from 'redux/modules/portfolio'
+import {
+  loadData,
+  toggleLoading,
+  toggleDetailsData,
+  loadDetailsData
+} from 'redux/modules/portfolio'
 import {confDynamicMenu, confTitle} from 'redux/modules/menu'
 import api from 'apiHandler'
 import styled from 'styled-components'
 import PortfolioItem from 'App/Portfolio/PortfolioItem'
 import Loading from 'App/common/animation/Loading'
 import Paginator from 'App/common/Paginator'
+import ItemDetails from 'App/Portfolio/ItemDetails'
 import {DynamicMenuBtn, DynamicMenuContent} from 'App/Portfolio/DynamicMenu'
 
 const PortfolioItemsContainer = styled.div`
@@ -77,6 +83,7 @@ class Portfolio extends React.Component {
         )
         : (
           <div>
+            <ItemDetails/>
             <PortfolioItemsContainer>
               {this.props.items.data.map(item => (
                 <PortfolioItem
@@ -85,6 +92,10 @@ class Portfolio extends React.Component {
                   thumbnail={item.thumbnail}
                   images={item.images}
                   category={item.category}
+                  onClick={() => {
+                    this.props.toggleDetailsData(true)
+                    this.props.loadDetailsData(item)
+                  }}
                 />
               ))}
             </PortfolioItemsContainer>
@@ -111,6 +122,8 @@ export default connect(
     loadData: data => dispatch(loadData(data)),
     toggleLoading: state => dispatch(toggleLoading(state)),
     confTitle: title => dispatch(confTitle(title)),
-    confDynamicMenu: conf => dispatch(confDynamicMenu(conf))
+    confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
+    toggleDetailsData: state => dispatch(toggleDetailsData(state)),
+    loadDetailsData: data => dispatch(loadDetailsData(data))
   })
 )(Portfolio)
