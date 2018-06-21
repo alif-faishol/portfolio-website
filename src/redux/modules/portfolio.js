@@ -2,6 +2,7 @@ import {combineReducers} from 'redux'
 
 const DATA_LOAD = 'App/Portfolio/DATA_LOAD'
 const LOADING_TOGGLE = 'App/Portfolio/LOADING_TOGGLE'
+const FILTER_CHANGE = 'App/Portfolio/FILTER_CHANGE'
 
 
 const items = (state={}, action) => (
@@ -16,9 +17,16 @@ const loading = (state=true, action) => (
     : state
 )
 
+const filter = (state={}, action) => (
+  action.type === FILTER_CHANGE
+    ? {...state, ...action.value}
+    : state
+)
+
 export default combineReducers({
   items,
-  loading
+  loading,
+  filter
 })
 
 
@@ -29,6 +37,11 @@ export const loadData = value => ({
 
 export const toggleLoading = value => ({
   type: LOADING_TOGGLE,
+  value
+})
+
+export const changeFilter = value => ({
+  type: FILTER_CHANGE,
   value
 })
 

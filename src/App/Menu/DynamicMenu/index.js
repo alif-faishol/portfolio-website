@@ -16,24 +16,30 @@ const RootContainer = styled.div`
 
 const Layer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
   height: 50px;
 `
 
 const MenuContent = props => (
   <RootContainer>
-    <Layer>
+    <Layer style={{justifyContent: 'space-between'}}>
+      <span>{props.dynamicMenu.title}</span>
       <Button
         onClick={() => props.toggleMenu(false)}
       >
         Close
       </Button>
     </Layer>
-    <Layer></Layer>
+    <Layer>
+      {props.dynamicMenu.content}
+    </Layer>
   </RootContainer>
 )
 
-export default connect(null,
+export default connect(
+  ({menu}) => ({
+    dynamicMenu: menu.dynamicMenu
+  }),
   dispatch => ({
     changeColorscheme: (colorscheme) => {
       dispatch(switchColorscheme(colorscheme))

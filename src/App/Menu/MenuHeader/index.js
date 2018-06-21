@@ -41,17 +41,32 @@ const ClosedMenu = props => (
       </span>
     </Column>
     <Column>
-      <Button
-        onClick={() => {
-          props.changeMenuContent("dynamicMenu")
-          props.toggleMenu()
-        }}
-        style={{
-          marginLeft: 'auto'
-        }}
-      >
-        {props.dynamicMenu.name}
-      </Button>
+      {typeof(props.dynamicMenu.link) === "string"
+          ? (
+            <a href={props.dynamicMenu.link}>
+              <Button
+                style={{
+                  marginLeft: 'auto'
+                }}
+              >
+                {props.dynamicMenu.name}
+              </Button>
+            </a>
+          )
+          : (
+            <Button
+              onClick={() => {
+                props.changeMenuContent("dynamicMenu")
+                props.toggleMenu()
+              }}
+              style={{
+                marginLeft: 'auto'
+              }}
+            >
+              {props.dynamicMenu.button}
+            </Button>
+          )
+      }
     </Column>
   </RootContainer>
 )

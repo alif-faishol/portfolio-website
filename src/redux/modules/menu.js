@@ -24,14 +24,19 @@ const menuContent = (state="home", action) => {
   }
 }
 
-const dynamicMenu = (state={
-  name: "Settings",
-  onClick: () => null,
-  content: () => null,
-}, action) => {
+export const dynamicMenuDefault = {
+  title: "Adjust settings",
+  button: "Settings",
+  link: null,
+  content: null,
+}
+
+const dynamicMenu = (state=dynamicMenuDefault, action) => {
   switch (action.type) {
     case DYNAMIC_MENU_CONF:
-      return {...state, ...action.conf}
+      return action.conf !== undefined
+        ? {...dynamicMenuDefault, ...action.conf}
+        : dynamicMenuDefault
     default:
       return state
   }
