@@ -2,7 +2,7 @@ import React from 'react'
 
 const CV = () => (
   <div>
-    <h1>This is CV page</h1>
+    <h1>Work in Progress</h1>
   </div>
 )
 
