@@ -30,6 +30,7 @@ const getPortfolioItems = (args) => {
             title: item.name,
             thumbnail: root + item.images[0],
             category: item.category,
+            videos: item.videos,
             images: item.images.map(item => (
               root + item
             ))
