@@ -8,7 +8,7 @@ import Button from 'App/common/styles/Button'
 const RootContainer = styled.div`
   width: 100%;
   display: flex;
-  height: 100px;
+  height: 150px;
   font-size: 20px;
   flex-flow: column;
   align-items: top;
@@ -17,7 +17,7 @@ const RootContainer = styled.div`
 const Layer = styled.div`
   display: flex;
   align-items: center;
-  height: 50px;
+  flex: 0 0 50px;
 `
 
 const MenuContent = props => (
@@ -30,7 +30,7 @@ const MenuContent = props => (
         Close
       </Button>
     </Layer>
-    <Layer>
+    <Layer style={{flex: '0 0 100px'}}>
       {props.dynamicMenu.content}
     </Layer>
   </RootContainer>

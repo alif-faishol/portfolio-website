@@ -38,7 +38,7 @@ class Menu extends React.Component {
       }
       : {
         RootContainerAni: {
-          height: props.menuExpanded ? 100 : 50,
+          height: props.menuExpanded ? 150 : 50,
           borderBottomWidth: 5,
         },
         MenuHeaderAni: {

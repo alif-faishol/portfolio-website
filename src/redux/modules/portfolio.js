@@ -17,11 +17,15 @@ const loading = (state=true, action) => (
     : state
 )
 
-const filter = (state={}, action) => (
-  action.type === FILTER_CHANGE
-    ? {...state, ...action.value}
-    : state
-)
+const filter = (state={}, action) => {
+  if(action.type === FILTER_CHANGE) {
+    return action.value !== undefined
+      ? {...state, ...action.value}
+      : {}
+  } else {
+    return state
+  }
+}
 
 export default combineReducers({
   items,
