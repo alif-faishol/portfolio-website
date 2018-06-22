@@ -83,7 +83,11 @@ class ItemDetails extends React.Component {
           innerRef={ref => this.RootContainer = ref}
         >
           <div className='content-container'>
-            <div ref={ref => this.content = ref} className='content'>
+            <div
+              ref={ref => this.content = ref}
+              className='content'
+              onClick={e => e.stopPropagation()}
+            >
               {this.props.detailsData.show && (
                 this.props.detailsData.data.videos
                 ?
