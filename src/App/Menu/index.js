@@ -25,7 +25,7 @@ class Menu extends React.Component {
       props.menuContent === "home"
       ? {
         RootContainerAni: {
-          height: ['100%', 50],
+          height: ['100vh', 50],
           borderBottomWidth: [100, 5],
           y: [0, 0]
         },
@@ -116,7 +116,6 @@ class Menu extends React.Component {
           innerRef={ref => this.animated.RootContainer = ref}
           colorscheme={this.props.colorscheme}
           style={{
-            ...(!this.props.menuExpanded && {overflowY: 'hidden'}),
             height: this.state.RootContainerAni.height[1],
             borderBottom: this.state.RootContainerAni.borderBottomWidth[1] + 'px solid black',
             boxShadow: '3px 3px 2px 0 rgba(0, 0, 0, 0.1)'

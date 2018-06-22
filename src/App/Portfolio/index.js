@@ -22,11 +22,8 @@ const PortfolioItemsContainer = styled.div`
 `
 
 const Centered = styled.div`
-  margin-top: ${props => props.viewportSize.height/2-100-50}px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: calc(100vh - 150px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,7 +74,7 @@ class Portfolio extends React.Component {
     return (
       (this.props.loading
         ? (
-          <Centered viewportSize={this.props.viewportSize}>
+          <Centered>
             <Loading/>
           </Centered>
         )
@@ -113,7 +110,6 @@ class Portfolio extends React.Component {
 
 export default connect(
   ({main, portfolio}) => ({
-    viewportSize: main.viewportSize,
     items: portfolio.items,
     filter: portfolio.filter,
     loading: portfolio.loading

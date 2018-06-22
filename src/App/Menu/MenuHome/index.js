@@ -10,7 +10,7 @@ import AboutIcon from './about-icon-svg'
 const RootContainer = styled.div`
   display: flex;
   flex-flow: column;
-  min-height: ${props => props.viewportsize.height}px;
+  min-height: 100vh;
 `
 
 const Logo = styled.div`
@@ -108,7 +108,6 @@ const MenuHome = props => (
 
 export default connect(
   ({main}) => ({
-    viewportsize: main.viewportSize,
     colorscheme: main.colorscheme
   }),
   dispatch => ({
