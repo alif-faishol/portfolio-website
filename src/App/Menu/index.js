@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {toggleTutor, toggleTransitionStatus} from 'redux/modules/main'
-import {toggleMenu} from 'redux/modules/menu'
+import {toggleMenu, changeMenuContent} from 'redux/modules/menu'
 import ContentContainer from '../common/styles/ContentContainer'
 import MenuHeader from './MenuHeader'
 import DynamicMenu from './DynamicMenu'
@@ -14,7 +14,6 @@ const RootContainer = styled.div`
   position: fixed;
   width: 100%;
   overflow: hidden;
-  bottom: 0;
   top: 0;
   background-color: ${props => props.colorscheme.menuBG};
 `
@@ -26,23 +25,20 @@ class Menu extends React.Component {
       props.menuContent === "home"
       ? {
         RootContainerAni: {
-          height: props.match.isExact || props.menuExpanded
-          ? props.viewportSize.height : 50,
-          borderBottomWidth: props.match.isExact || props.menuExpanded
-          ? 100 : 5
+          height: ['100%', 50],
+          borderBottomWidth: [100, 5],
         },
         MenuHeaderAni: {
-          height: props.match.isExact || props.menuExpanded
-          ? 0 : 50,
+          height: [0, 50]
         }
       }
       : {
         RootContainerAni: {
-          height: props.menuExpanded ? 150 : 50,
-          borderBottomWidth: 5,
+          height: ['auto', 50],
+          borderBottomWidth: [5, 5],
+          y: [-50, 0]
         },
         MenuHeaderAni: {
-          height: props.menuExpanded ? 0 : 50,
         }
       }
     )
@@ -50,13 +46,20 @@ class Menu extends React.Component {
     this.animated = {}
     this.animate = (target, val, cb) => {
       cb = cb || (() => null)
-      val = {
-        duration: 0.75,
-        ...val
+      if(!this.props.menuExpanded) {
+        TweenMax
+          .set(target, {
+            ...Object.keys(val).reduce((total, cur) => {
+              total[cur] = val[cur][0]
+              return total
+            }, {}),
+          })
       }
-      return TweenMax
-        .to(target, val.duration, {
-          ...val,
+      TweenMax[this.props.menuExpanded ? 'to' : 'from'](target, 0.75, {
+          ...Object.keys(val).reduce((total, cur) => {
+            total[cur] = val[cur][1]
+            return total
+          }, {}),
           onComplete() {
             cb()
           },
@@ -65,18 +68,28 @@ class Menu extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.match.isExact
-      && !this.props.menuExpanded
-      && this.props.toggleMenu(true)
+    if(this.props.match.isExact) {
+      !this.props.menuExpanded && this.props.toggleMenu(true)
+      if(this.props.menuContent !== 'home') {
+        this.props.changeMenuContent('home')
+        this.props.toggleMenu(false)
+        this.props.toggleMenu(true)
+      }
+    }
+  }
+  componentDidUpdate() {
+    if(this.props.match.isExact) {
+      !this.props.menuExpanded && this.props.toggleMenu(true)
+      if(this.props.menuContent !== 'home') {
+        this.props.changeMenuContent('home')
+        this.props.toggleMenu(false)
+        this.props.toggleMenu(true)
+      }
+    }
   }
   componentWillReceiveProps(nextProps) {
-    nextProps.match.isExact
-      && !nextProps.menuExpanded
-      && nextProps.toggleMenu(true)
-
     if(
       (nextProps.menuExpanded !== this.props.menuExpanded)
-      || (nextProps.menuExpanded && nextProps.viewportSize !== this.props.viewportSize)
     ) {
       const nextState = this.stateConstructor(nextProps)
       nextProps.toggleTransitionStatus(true)
@@ -102,8 +115,8 @@ class Menu extends React.Component {
           colorscheme={this.props.colorscheme}
           style={{
             ...(!this.props.menuExpanded && {overflowY: 'hidden'}),
-            height: this.state.RootContainerAni.height,
-            borderBottom: this.state.RootContainerAni.borderBottomWidth + 'px solid black',
+            height: this.state.RootContainerAni.height[1],
+            borderBottom: this.state.RootContainerAni.borderBottomWidth[1] + 'px solid black',
             boxShadow: '3px 3px 2px 0 rgba(0, 0, 0, 0.1)'
           }}
         >
@@ -112,7 +125,6 @@ class Menu extends React.Component {
               ref={ref => this.animated.MenuHeader = ref}
               style={{
                 overflow: 'hidden',
-                height: this.state.MenuHeaderAni.height
               }}
             >
               <MenuHeader/>
@@ -134,7 +146,6 @@ export default connect(
     menuExpanded: state.menu.menuExpanded,
     menuContent: state.menu.menuContent,
     colorscheme: state.main.colorscheme,
-    viewportSize: state.main.viewportSize
   }),
   dispatch => ({
     toggleTutor: () => {
@@ -145,6 +156,9 @@ export default connect(
     },
     toggleMenu: status => {
       dispatch(toggleMenu(status))
+    },
+    changeMenuContent: content => {
+      dispatch(changeMenuContent(content))
     }
   })
 )(Menu)
