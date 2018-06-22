@@ -29,7 +29,8 @@ const DynamicMenuContentView = props => {
       font-size: 15px;
       color: white;
       padding: 5px;
-      margin: 0 10px 10px 0;
+      margin-bottom: 15px;
+      margin-right: 15px;
       opacity: ${props => props.checked ? 1 : 0.5};
       background-color: ${props => props.color};
       cursor: pointer;
@@ -43,18 +44,18 @@ const DynamicMenuContentView = props => {
       : false
 
     return (
-      <Label 
-        checked={checked}
-        color={props.color}
-      >
-        <input
-          name={props.id}
-          type='checkbox'
+        <Label 
           checked={checked}
-          onChange={changeHandler}
-        />
-        {props.name}
-      </Label>
+          color={props.color}
+        >
+          <input
+            name={props.id}
+            type='checkbox'
+            checked={checked}
+            onChange={changeHandler}
+          />
+          {props.name}
+        </Label>
     )
   }
 
@@ -69,7 +70,7 @@ const DynamicMenuContentView = props => {
   `
 
   return (
-    <div>
+    <div style={{paddingTop: '15px'}}>
       <Checkbox
         filter={props.filter}
         changeFilter={props.changeFilter}
