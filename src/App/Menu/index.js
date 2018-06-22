@@ -27,6 +27,7 @@ class Menu extends React.Component {
         RootContainerAni: {
           height: ['100%', 50],
           borderBottomWidth: [100, 5],
+          y: [0, 0]
         },
         MenuHeaderAni: {
           height: [0, 50]
@@ -39,6 +40,7 @@ class Menu extends React.Component {
           y: [-50, 0]
         },
         MenuHeaderAni: {
+          height: [50, 50]
         }
       }
     )
