@@ -37,7 +37,7 @@ const detailsData = (state={
     case DETAILS_LOAD:
       return {
         ...state,
-        data: action.value
+        data: action.value !== undefined ? action.value : {}
       }
     case DETAILS_TOGGLE:
       return {
