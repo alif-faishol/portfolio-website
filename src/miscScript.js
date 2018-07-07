@@ -1,10 +1,10 @@
-import store from 'redux/store'
-import {updateViewportSize} from 'redux/modules/main'
+import store from 'redux/store';
+import { updateViewportSize } from 'redux/modules/main';
 
 const resized = () => {
-  store.dispatch(updateViewportSize())
-}
+  store.dispatch(updateViewportSize());
+};
 
 export default () => {
-  window.addEventListener('resize', resized)
-}
+  window.addEventListener('resize', resized);
+};

@@ -1,13 +1,17 @@
-import React from 'react'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
-import Menu from './Menu'
-import Portfolio from './Portfolio'
-import About from './About'
-import CV from './CV'
-import 'normalize.css'
-import {connect} from 'react-redux'
-import MainRouteContainer from './common/MainRouteContainer'
-import styled from 'styled-components'
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Menu from './Menu';
+import Portfolio from './Portfolio';
+import About from './About';
+import CV from './CV';
+import 'normalize.css';
+import MainRouteContainer from './common/MainRouteContainer';
 
 const globalStyle = backgroundColor => (`
   @import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700|Overlock:400,400i,700,700i');
@@ -35,13 +39,13 @@ const globalStyle = backgroundColor => (`
   figure, figcaption, footer, header, hgroup, 
   menu, nav, output, ruby, section, summary,
   button, time, mark, audio, video {
-  	margin: 0;
-  	padding: 0;
-  	border: 0;
-  	font-size: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
     font-family: 'Josefin Sans', sans-serif;
     background: none repeat scroll 0 0 transparent;
-  	vertical-align: baseline;
+    vertical-align: baseline;
     text-decoration: none;
   }
   a:visited {
@@ -50,68 +54,78 @@ const globalStyle = backgroundColor => (`
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure, 
   footer, header, hgroup, menu, nav, section {
-  	display: block;
+    display: block;
   }
   body {
-  	line-height: 1;
+    line-height: 1;
   }
   ol, ul {
-  	list-style: none;
+    list-style: none;
   }
   blockquote, q {
-  	quotes: none;
+    quotes: none;
   }
   blockquote:before, blockquote:after,
   q:before, q:after {
-  	content: '';
-  	content: none;
+    content: '';
+    content: none;
   }
   table {
-  	border-collapse: collapse;
-  	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
   }
-`)
+`);
 
 const PageContainer = styled.div`
   z-index: 50;
   position: relative;
   padding-top: 100px;
-`
+`;
 
-const App = props => (
+const App = ({ colorscheme }) => (
   <Router>
     <div>
       <style>
-        {globalStyle(props.colorscheme.contentBG)}
+        {globalStyle(colorscheme.contentBG)}
       </style>
-      <Route path='/' component={Menu} />
+      <Route path="/" component={Menu} />
       <PageContainer>
         <Route
           exact
-          path='/portfolio/:page?'
-          render={props =>
-              <MainRouteContainer {...props} children={Portfolio}/>
-          }
+          path="/portfolio/:page?"
+          render={props => (
+            <MainRouteContainer {...props}>
+              <Portfolio {...props} />
+            </MainRouteContainer>
+          )}
         />
         <Route
-          path='/cv'
-          render={props =>
-              <MainRouteContainer {...props} children={CV}/>
-          }
+          path="/cv"
+          render={props => (
+            <MainRouteContainer {...props}>
+              <CV {...props} />
+            </MainRouteContainer>
+          )}
         />
         <Route
-          path='/about'
-          render={props =>
-              <MainRouteContainer {...props} children={About}/>
-          }
+          path="/about"
+          render={props => (
+            <MainRouteContainer {...props}>
+              <About {...props} />
+            </MainRouteContainer>
+          )}
         />
       </PageContainer>
     </div>
   </Router>
-)
+);
+
+App.propTypes = {
+  colorscheme: PropTypes.object.isRequired,
+};
 
 export default connect(
-  ({main}) => ({
-    colorscheme: main.colorscheme
-  })
-)(App)
+  ({ main }) => ({
+    colorscheme: main.colorscheme,
+  }),
+)(App);

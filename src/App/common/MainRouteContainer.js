@@ -1,12 +1,13 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {toggleMenu} from 'redux/modules/menu'
-import ContentContainer from './styles/ContentContainer'
-import Loading from 'App/common/animation/Loading'
-import styled from 'styled-components'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { toggleMenu } from 'redux/modules/menu';
+import styled from 'styled-components';
+import Loading from 'App/common/animation/Loading';
+import ContentContainer from './styles/ContentContainer';
 
 const Centered = styled.div`
-  margin-top: ${props => props.viewportSize.height/2-100-50}px;
+  margin-top: ${viewportSize => viewportSize.height / 2 - 100 - 50}px;
   margin-left: auto;
   margin-right: auto;
   width: 100px;
@@ -14,37 +15,58 @@ const Centered = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 class MainRouteContainer extends React.Component {
+  static propTypes = {
+    menuExpanded: PropTypes.bool.isRequired,
+    _toggleMenu: PropTypes.func.isRequired,
+    menuContent: PropTypes.string.isRequired,
+    onTransition: PropTypes.bool.isRequired,
+    viewportSize: PropTypes.object.isRequired,
+    children: PropTypes.node.isRequired,
+  };
+
   componentDidMount() {
-    this.props.menuExpanded && this.props.toggleMenu(false)
+    const { menuExpanded, _toggleMenu } = this.props;
+    if (menuExpanded) {
+      _toggleMenu(false);
+    }
   }
+
   render() {
-    return this.props.menuContent === "home" 
+    const {
+      menuContent,
+      onTransition,
+      menuExpanded,
+      viewportSize,
+      children,
+    } = this.props;
+    return menuContent === 'home'
       && (
-        this.props.onTransition || this.props.menuExpanded
+        onTransition || menuExpanded
       )
-      ? (<Centered viewportSize={this.props.viewportSize}>
-        <Loading/>
-      </Centered>)
+      ? (
+        <Centered viewportSize={viewportSize}>
+          <Loading />
+        </Centered>)
       : (
         <ContentContainer>
-          <this.props.children {...this.props}/>
-        </ContentContainer>)
+          {children}
+        </ContentContainer>);
   }
 }
 
 export default connect(
-  ({main, menu}) => ({
+  ({ main, menu }) => ({
     viewportSize: main.viewportSize,
     menuExpanded: menu.menuExpanded,
     menuContent: menu.menuContent,
-    onTransition: main.onTransition
+    onTransition: main.onTransition,
   }),
   dispatch => ({
-    toggleMenu: (toBe) => {
-      dispatch(toggleMenu(toBe))
-    }
-  })
-)(MainRouteContainer)
+    _toggleMenu: (toBe) => {
+      dispatch(toggleMenu(toBe));
+    },
+  }),
+)(MainRouteContainer);

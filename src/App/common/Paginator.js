@@ -1,7 +1,7 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import styled from 'styled-components'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -15,91 +15,95 @@ const Container = styled.div`
     text-decoration: none;
     color: inherit;
   }
-`
+`;
 
 const Button = styled.div`
   margin-right: 20px;
   margin-left: 20px;
   width: 70px;
-  cursor: ${props => props.active ? 'pointer' : 'not-allowed'};
-  opacity: ${props => props.active ? '1' : '.5'};
+  cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
+  opacity: ${({ active }) => (active ? '1' : '.5')};
   &:hover {
-    background-color: ${props => props.active && props.colorscheme.highlight};
+    background-color: ${({ active, colorscheme }) => active && colorscheme.highlight};
   }
   &:active {
-    ${props => props.active && 'font-size: 15px;'}
+    ${({ active }) => active && 'font-size: 15px;'}
   }
-`
+`;
 
-const PrevBtn = props => (
-  props.activePage - 1 !== 0 ?
-    (<Link
-      to={props.baseUrl + (props.activePage - 1)}
-      onClick={window.scroll({top: 0})}
-    >
+const PrevBtn = ({ activePage, baseUrl, colorscheme }) => (
+  activePage - 1 !== 0
+    ? (
+      <Link
+        to={baseUrl + (activePage - 1)}
+        onClick={window.scroll({ top: 0 })}
+      >
+        <Button
+          active
+          colorscheme={colorscheme}
+        >
+          prev
+        </Button>
+      </Link>)
+    : (
       <Button
-        active={true}
-        colorscheme={props.colorscheme}
+        active={false}
+        colorscheme={colorscheme}
       >
         prev
       </Button>
-    </Link>)
-  :
-    (<Button
-      active={false}
-      colorscheme={props.colorscheme}
-    >
-      prev
-    </Button>)
-)
+    )
+);
 
-const NextBtn = props => (
-  props.activePage + 1 <= props.totalPage ?
-    (<Link
-      to={props.baseUrl + (props.activePage + 1)}
-      onClick={window.scroll({top: 0})}
-    >
+const NextBtn = ({ activePage, baseUrl, colorscheme, totalPage }) => (
+  activePage + 1 <= totalPage
+    ? (
+      <Link
+        to={baseUrl + (activePage + 1)}
+        onClick={window.scroll({ top: 0 })}
+      >
+        <Button
+          active
+          colorscheme={colorscheme}
+        >
+          next
+        </Button>
+      </Link>)
+    : (
       <Button
-        active={true}
-        colorscheme={props.colorscheme}
+        active={false}
+        colorscheme={colorscheme}
       >
         next
       </Button>
-    </Link>)
-    :
-    (<Button
-      active={false}
-      colorscheme={props.colorscheme}
-    >
-      next
-    </Button>)
-)
+    )
+);
 
-const Paginator = props => (
+const Paginator = ({ activePage, baseUrl, colorscheme, totalPage }) => (
   <Container>
     <PrevBtn
-      activePage={parseInt(props.activePage, 10)}
-      baseUrl={props.baseUrl}
-      colorscheme={props.colorscheme}
+      activePage={parseInt(activePage, 10)}
+      baseUrl={baseUrl}
+      colorscheme={colorscheme}
     />
     <div
       style={{
-        fontSize: '20px'
+        fontSize: '20px',
       }}
     >
-      {props.activePage} / {props.totalPage}
+      {`${activePage} / ${totalPage}`}
     </div>
     <NextBtn
-      totalPage={parseInt(props.totalPage, 10)}
-      activePage={parseInt(props.activePage, 10)}
-      baseUrl={props.baseUrl}
-      colorscheme={props.colorscheme}
+      totalPage={parseInt(totalPage, 10)}
+      activePage={parseInt(activePage, 10)}
+      baseUrl={baseUrl}
+      colorscheme={colorscheme}
     />
   </Container>
-)
+);
 
 export default connect(
   ({ main }) => ({
-    colorscheme: main.colorscheme
-  })
-)(Paginator)
+    colorscheme: main.colorscheme,
+  }),
+)(Paginator);

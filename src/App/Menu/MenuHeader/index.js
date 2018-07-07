@@ -1,10 +1,10 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import styled from 'styled-components'
-import {toggleMenu} from 'redux/modules/menu'
-import {changeMenuContent} from 'redux/modules/menu'
-import Button from 'App/common/styles/Button'
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { toggleMenu } from 'redux/modules/menu';
+import { changeMenuContent } from 'redux/modules/menu';
+import Button from 'App/common/styles/Button';
 
 const RootContainer = styled.div`
   width: 100%;
@@ -13,20 +13,20 @@ const RootContainer = styled.div`
   height: 50px;
   font-size: 20px;
   align-items: center;
-`
+`;
 
 const Column = styled.div`
   display: flex;
   flex: 1 0 100px;
-`
+`;
 
 const ClosedMenu = props => (
   <RootContainer>
     <Column>
       <Link
-        to='/'
+        to="/"
         onClick={() => {
-          props.changeMenuContent("home")
+          props.changeMenuContent('home')
           props.toggleMenu(true)
         }}
       >
@@ -35,18 +35,18 @@ const ClosedMenu = props => (
         </Button>
       </Link>
     </Column>
-    <Column style={{flexGrow: 9}}>
-      <span style={{margin: '0 auto'}}>
+    <Column style={{ flexGrow: 9 }}>
+      <span style={{ margin: '0 auto' }}>
         {props.title}
       </span>
     </Column>
     <Column>
-      {typeof(props.dynamicMenu.link) === "string"
+      {typeof(props.dynamicMenu.link) === 'string'
           ? (
             <a href={props.dynamicMenu.link}>
               <Button
                 style={{
-                  marginLeft: 'auto'
+                  marginLeft: 'auto',
                 }}
               >
                 {props.dynamicMenu.name}
@@ -56,11 +56,11 @@ const ClosedMenu = props => (
           : (
             <Button
               onClick={() => {
-                props.changeMenuContent("dynamicMenu")
-                props.toggleMenu()
+                props.changeMenuContent('dynamicMenu');
+                props.toggleMenu();
               }}
               style={{
-                marginLeft: 'auto'
+                marginLeft: 'auto',
               }}
             >
               {props.dynamicMenu.button}
@@ -69,20 +69,20 @@ const ClosedMenu = props => (
       }
     </Column>
   </RootContainer>
-)
+);
 
 
 export default connect(
-  ({menu}) => ({
+  ({ menu }) => ({
     dynamicMenu: menu.dynamicMenu,
-    title: menu.title
+    title: menu.title,
   }),
   dispatch => ({
     toggleMenu: () => {
-      dispatch(toggleMenu())
+      dispatch(toggleMenu());
     },
     changeMenuContent: (content) => {
-      dispatch(changeMenuContent(content))
-    }
-  })
-)(ClosedMenu)
+      dispatch(changeMenuContent(content));
+    },
+  }),
+)(ClosedMenu);

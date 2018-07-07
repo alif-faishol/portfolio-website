@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const Spinner = styled.div`
   border-radius: 50%;
@@ -16,7 +16,7 @@ const Spinner = styled.div`
       transform: rotate(360deg);
     }
   }
-`
+`;
 
 export default props => 
   <Spinner
@@ -26,4 +26,3 @@ export default props =>
         : 'rgb(0, 0, 0)'
     }
   />
-

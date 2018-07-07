@@ -1,81 +1,81 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux';
 
-const MENU_TOGGLE = 'App/Menu/MENU_TOGGLE'
-const MENU_CONTENT_CHANGE = 'App/Menu/MENU_CONTENT_CHANGE'
-const DYNAMIC_MENU_CONF = 'App/Menu/DYNAMIC_MENU_CONF'
-const TITLE_CONF = 'App/Menu/TITLE_CONF'
+const MENU_TOGGLE = 'App/Menu/MENU_TOGGLE';
+const MENU_CONTENT_CHANGE = 'App/Menu/MENU_CONTENT_CHANGE';
+const DYNAMIC_MENU_CONF = 'App/Menu/DYNAMIC_MENU_CONF';
+const TITLE_CONF = 'App/Menu/TITLE_CONF';
 
 
-const menuExpanded = (state=false, action) => {
+const menuExpanded = (state = false, action) => {
   switch (action.type) {
     case MENU_TOGGLE:
-      return action.toBe !== undefined ? action.toBe : !state
+      return action.toBe !== undefined ? action.toBe : !state;
     default:
-      return state
+      return state;
   }
-}
+};
 
-const menuContent = (state="home", action) => {
+const menuContent = (state = 'home', action) => {
   switch (action.type) {
     case MENU_CONTENT_CHANGE:
-      return action.content
+      return action.content;
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const dynamicMenuDefault = {
-  title: "Adjust settings",
-  button: "Settings",
+  title: 'Adjust settings',
+  button: 'Settings',
   link: null,
   content: null,
-}
+};
 
-const dynamicMenu = (state=dynamicMenuDefault, action) => {
+const dynamicMenu = (state = dynamicMenuDefault, action) => {
   switch (action.type) {
     case DYNAMIC_MENU_CONF:
       return action.conf !== undefined
-        ? {...dynamicMenuDefault, ...action.conf}
-        : dynamicMenuDefault
+        ? { ...dynamicMenuDefault, ...action.conf }
+        : dynamicMenuDefault;
     default:
-      return state
+      return state;
   }
-}
+};
 
-const title = (state="Alif Faishol", action) => {
+const title = (state = 'Alif Faishol', action) => {
   switch (action.type) {
     case TITLE_CONF:
-      return action.title !== undefined ? action.title : "Alif Faishol"
+      return action.string !== undefined ? action.string : 'Alif Faishol';
     default:
-      return state
+      return state;
   }
-}
+};
 
 
 export default combineReducers({
   menuExpanded,
   menuContent,
   dynamicMenu,
-  title
-})
+  title,
+});
 
 
-export const confTitle = title => ({
+export const confTitle = string => ({
   type: TITLE_CONF,
-  title
-})
+  string,
+});
 
 export const confDynamicMenu = conf => ({
   type: DYNAMIC_MENU_CONF,
-  conf
-})
+  conf,
+});
 
 export const toggleMenu = to => ({
   type: MENU_TOGGLE,
-  toBe: to
-})
+  toBe: to,
+});
 
 export const changeMenuContent = content => ({
   type: MENU_CONTENT_CHANGE,
-  content
-})
+  content,
+});
