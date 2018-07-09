@@ -1,17 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
-import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {toggleMenu} from 'redux/modules/menu'
-import PortfolioIcon from './portfolio-icon-svg'
-import CVIcon from './cv-icon-svg'
-import AboutIcon from './about-icon-svg'
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { toggleMenu } from 'redux/modules/menu';
+import PortfolioIcon from './portfolio-icon-svg';
+import CVIcon from './cv-icon-svg';
+import AboutIcon from './about-icon-svg';
 
 const RootContainer = styled.div`
   display: flex;
   flex-flow: column;
-  min-height: 100vh;
-`
+`;
 
 const Logo = styled.div`
   flex: 9 0 200px;
@@ -26,7 +25,7 @@ const Logo = styled.div`
     font-size: 13px;
     line-height: 25px;
   }
-`
+`;
 
 const Menu = styled(Link)`
   flex: 0 1 200px;
@@ -37,7 +36,7 @@ const Menu = styled(Link)`
   flex-flow: column;
   text-decoration: none;
   & svg {
-    fill: ${props => props.color};
+    fill: ${({ color }) => color};
     width: 20%;
   }
   & div {
@@ -56,61 +55,72 @@ const Menu = styled(Link)`
       font-size: 12px;
     }
   }
-`
+`;
 
 const MenuContainer = styled.div`
   display: flex; 
   flex: 1 0 auto;
   justify-content: space-around;
   & ${Menu}:hover {
-    background-color: ${props => props.hoverColor};
+    background-color: ${({ hoverColor }) => hoverColor};
   }
-`
+`;
 
-const MenuHome = props => (
+const MenuHome = ({ viewportSize, colorscheme, _toggleMenu }) => (
   <RootContainer
-    viewportsize={props.viewportsize}
+    style={{
+      minHeight: viewportSize.height,
+    }}
   >
     <Logo>
       <div>
         Alif Faishol
       </div>
-      <div className='small'>WEB DEVELOPER &amp; GRAPHIC DESIGNER</div>
+      <div className="small">
+        WEB DEVELOPER &amp; GRAPHIC DESIGNER
+      </div>
     </Logo>
-    <MenuContainer hoverColor={props.colorscheme.highlight}>
+    <MenuContainer hoverColor={colorscheme.highlight}>
       <Menu
-        to='/portfolio'
-        color={props.colorscheme.accent2}
-        onClick={() => props.toggleMenu(false)}
+        to="/portfolio"
+        color={colorscheme.accent2}
+        onClick={() => _toggleMenu(false)}
       >
-        <PortfolioIcon/>
-        <div>Portfolio</div>
+        <PortfolioIcon />
+        <div>
+          Portfolio
+        </div>
       </Menu>
       <Menu
-        to='/cv'
-        color={props.colorscheme.accent1}
-        onClick={() => props.toggleMenu(false)}
+        to="/cv"
+        color={colorscheme.accent1}
+        onClick={() => _toggleMenu(false)}
       >
-        <CVIcon/>
-        <div>CV</div>
+        <CVIcon />
+        <div>
+          CV
+        </div>
       </Menu>
       <Menu
-        to='/about'
-        color={props.colorscheme.accent3}
-        onClick={() => props.toggleMenu(false)}
+        to="/about"
+        color={colorscheme.accent3}
+        onClick={() => _toggleMenu(false)}
       >
-        <AboutIcon/>
-        <div>About</div>
+        <AboutIcon />
+        <div>
+          About
+        </div>
       </Menu>
     </MenuContainer>
   </RootContainer>
-)
+);
 
 export default connect(
-  ({main}) => ({
-    colorscheme: main.colorscheme
+  ({ main }) => ({
+    colorscheme: main.colorscheme,
+    viewportSize: main.viewportSize,
   }),
   dispatch => ({
-    toggleMenu: status => dispatch(toggleMenu(status))
-  })
-)(MenuHome)
+    _toggleMenu: status => dispatch(toggleMenu(status)),
+  }),
+)(MenuHome);

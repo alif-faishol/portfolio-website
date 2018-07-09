@@ -1,5 +1,6 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import getColorscheme from 'App/common/themes';
+import commitHash from '../../commit-hash';
 
 // Action Types
 const TUTOR_TOGGLE = 'App/TUTOR_TOGGLE';
@@ -51,6 +52,7 @@ export default combineReducers({
   viewportSize,
   colorscheme,
   onTransition,
+  commitHash: () => commitHash,
 });
 
 

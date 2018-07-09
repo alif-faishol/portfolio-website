@@ -1,25 +1,25 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
 import {
   loadData,
   toggleLoading,
   toggleDetailsData,
-  loadDetailsData
-} from 'redux/modules/portfolio'
-import {confDynamicMenu, confTitle} from 'redux/modules/menu'
-import api from 'apiHandler'
-import styled from 'styled-components'
-import PortfolioItem from 'App/Portfolio/PortfolioItem'
-import Loading from 'App/common/animation/Loading'
-import Paginator from 'App/common/Paginator'
-import ItemDetails from 'App/Portfolio/ItemDetails'
-import {DynamicMenuBtn, DynamicMenuContent} from 'App/Portfolio/DynamicMenu'
+  loadDetailsData,
+} from 'redux/modules/portfolio';
+import { confDynamicMenu, confTitle } from 'redux/modules/menu';
+import api from 'apiHandler';
+import styled from 'styled-components';
+import PortfolioItem from 'App/Portfolio/PortfolioItem';
+import Loading from 'App/common/animation/Loading';
+import Paginator from 'App/common/Paginator';
+import ItemDetails from 'App/Portfolio/ItemDetails';
+import { DynamicMenuBtn, DynamicMenuContent } from 'App/Portfolio/DynamicMenu';
 
 const PortfolioItemsContainer = styled.div`
   display: flex;
   flex-flow: wrap;
   justify-content: center;
-`
+`;
 
 const Centered = styled.div`
   width: 100%;
@@ -27,62 +27,92 @@ const Centered = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 class Portfolio extends React.Component {
   componentDidMount() {
+    const {
+      match,
+      _loadData,
+      _toggleLoading,
+      _confTitle,
+      _confDynamicMenu,
+    } = this.props;
     api.getPortfolioItems({
-      page: this.props.match.params.page ? this.props.match.params.page : 1
+      page: match.params.page ? match.params.page : 1,
     })
-      .then(res => {
-        this.props.loadData(res)
-        this.props.toggleLoading(false)
+      .then((res) => {
+        _loadData(res);
+        _toggleLoading(false);
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
 
-    this.props.confTitle("Portfolio")
+    _confTitle('Portfolio');
 
-    this.props.confDynamicMenu({
-      title: "Apply filter:",
-      button: <DynamicMenuBtn/>,
-      content: <DynamicMenuContent/>,
-    })
+    _confDynamicMenu({
+      title: 'Apply filter:',
+      button: <DynamicMenuBtn />,
+      content: <DynamicMenuContent />,
+    });
   }
+
   componentWillReceiveProps(nextProps) {
-    if(this.props.filter !== nextProps.filter) {
-      this.props.history.push('/portfolio')
+    const {
+      filter,
+      history,
+      match,
+      _toggleLoading,
+      _loadData,
+    } = this.props;
+    if (filter !== nextProps.filter) {
+      history.push('/portfolio');
     }
-    if(this.props.match.params !== nextProps.match.params) {
-      this.props.toggleLoading(true)
+    if (match.params !== nextProps.match.params) {
+      _toggleLoading(true);
       api.getPortfolioItems({
         page: nextProps.match.params.page ? nextProps.match.params.page : 1,
-        filter: nextProps.filter
+        filter: nextProps.filter,
       })
-        .then(res => {
-          nextProps.loadData(res)
-          this.props.toggleLoading(false)
+        .then((res) => {
+          _loadData(res);
+          _toggleLoading(false);
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
     }
   }
+
   componentWillUnmount() {
-    this.props.toggleLoading(true)
-    this.props.confDynamicMenu()
-    this.props.confTitle()
+    const {
+      _toggleLoading,
+      _confDynamicMenu,
+      _confTitle,
+    } = this.props;
+
+    _toggleLoading(true);
+    _confDynamicMenu();
+    _confTitle();
   }
+
   render() {
+    const {
+      loading,
+      items,
+      match,
+      _toggleDetailsData,
+      _loadDetailsData,
+    } = this.props;
     return (
-      (this.props.loading
+      (loading
         ? (
           <Centered>
-            <Loading/>
+            <Loading />
           </Centered>
         )
         : (
           <div>
-            <ItemDetails/>
+            <ItemDetails />
             <PortfolioItemsContainer>
-              {this.props.items.data.map(item => (
+              {items.data.map(item => (
                 <PortfolioItem
                   key={item.id}
                   title={item.title}
@@ -90,36 +120,36 @@ class Portfolio extends React.Component {
                   images={item.images}
                   category={item.category}
                   onClick={() => {
-                    this.props.toggleDetailsData(true)
-                    this.props.loadDetailsData(item)
+                    _toggleDetailsData(true);
+                    _loadDetailsData(item);
                   }}
                 />
               ))}
             </PortfolioItemsContainer>
             <Paginator
-              totalPage={this.props.items.meta.totalPage}
-              activePage={this.props.match.params.page || 1}
-              baseUrl={'/portfolio/'}
+              totalPage={items.meta.totalPage}
+              activePage={match.params.page || 1}
+              baseUrl="/portfolio/"
             />
           </div>
         )
       )
-    )
+    );
   }
 }
 
 export default connect(
-  ({main, portfolio}) => ({
+  ({ portfolio }) => ({
     items: portfolio.items,
     filter: portfolio.filter,
-    loading: portfolio.loading
+    loading: portfolio.loading,
   }),
   dispatch => ({
-    loadData: data => dispatch(loadData(data)),
-    toggleLoading: state => dispatch(toggleLoading(state)),
-    confTitle: title => dispatch(confTitle(title)),
-    confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
-    toggleDetailsData: state => dispatch(toggleDetailsData(state)),
-    loadDetailsData: data => dispatch(loadDetailsData(data))
-  })
-)(Portfolio)
+    _loadData: data => dispatch(loadData(data)),
+    _toggleLoading: state => dispatch(toggleLoading(state)),
+    _confTitle: title => dispatch(confTitle(title)),
+    _confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
+    _toggleDetailsData: state => dispatch(toggleDetailsData(state)),
+    _loadDetailsData: data => dispatch(loadDetailsData(data)),
+  }),
+)(Portfolio);

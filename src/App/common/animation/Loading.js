@@ -18,7 +18,7 @@ const Spinner = styled.div`
   }
 `;
 
-export default props => 
+export default props =>  (
   <Spinner
     scheme={
       props.color !== undefined
@@ -26,3 +26,4 @@ export default props =>
         : 'rgb(0, 0, 0)'
     }
   />
+)

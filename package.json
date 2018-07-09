@@ -22,8 +22,9 @@
     "styled-components": "^2.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "commit-hash": "echo 'export default \"'`git rev-parse HEAD`'\";' > src/commit-hash.js",
+    "start": "yarn commit-hash; react-scripts start",
+    "build": "yarn commit-hash; react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "edit-data": "cms-json -p 3001 -s './public/static-data/cms-json/schema.json' -d './public/static-data/cms-json/data.json'",
     "eject": "react-scripts eject"
@@ -42,6 +43,12 @@
         "off"
       ],
       "react/forbid-prop-types": [
+        "off"
+      ],
+      "react/prop-types": [
+        "off"
+      ],
+      "import/no-unresolved": [
         "off"
       ]
     }

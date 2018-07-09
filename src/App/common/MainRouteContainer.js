@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { toggleMenu } from 'redux/modules/menu';
 import styled from 'styled-components';
 import Loading from 'App/common/animation/Loading';
+import Footer from 'App/common/Footer';
 import ContentContainer from './styles/ContentContainer';
 
 const Centered = styled.div`
@@ -51,9 +52,13 @@ class MainRouteContainer extends React.Component {
           <Loading />
         </Centered>)
       : (
-        <ContentContainer>
-          {children}
-        </ContentContainer>);
+        <div>
+          <ContentContainer>
+            {children}
+          </ContentContainer>
+          <Footer />
+        </div>
+      );
   }
 }
 

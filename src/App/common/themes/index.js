@@ -4,7 +4,7 @@ const light = {
   highlight: 'rgb(240, 240, 240)', // Highlight Background Color
   accent1: 'rgb(252, 77, 74)', // Accent Color 1
   accent2: 'rgb(111, 73, 255)', // Accent Color 2
-  accent3: 'rgb(75, 210, 99)', // Accent Color 3
+  accent3: 'rgb(60, 192, 16)', // Accent Color 3
 };
 
 const experiment = {

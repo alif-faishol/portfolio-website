@@ -55,7 +55,12 @@ const PrevBtn = ({ activePage, baseUrl, colorscheme }) => (
     )
 );
 
-const NextBtn = ({ activePage, baseUrl, colorscheme, totalPage }) => (
+const NextBtn = ({
+  activePage,
+  baseUrl,
+  colorscheme,
+  totalPage,
+}) => (
   activePage + 1 <= totalPage
     ? (
       <Link
@@ -79,7 +84,12 @@ const NextBtn = ({ activePage, baseUrl, colorscheme, totalPage }) => (
     )
 );
 
-const Paginator = ({ activePage, baseUrl, colorscheme, totalPage }) => (
+const Paginator = ({
+  activePage,
+  baseUrl,
+  colorscheme,
+  totalPage,
+}) => (
   <Container>
     <PrevBtn
       activePage={parseInt(activePage, 10)}
