@@ -119,6 +119,7 @@ class Portfolio extends React.Component {
                   thumbnail={item.thumbnail}
                   images={item.images}
                   category={item.category}
+                  onKeyDown={e => console.log(e.keyCode)}
                   onClick={() => {
                     _toggleDetailsData(true);
                     _loadDetailsData(item);

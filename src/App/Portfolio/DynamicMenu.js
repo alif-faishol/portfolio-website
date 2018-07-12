@@ -1,7 +1,7 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import styled from 'styled-components'
-import {changeFilter} from 'redux/modules/portfolio'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { changeFilter } from 'redux/modules/portfolio';
 
 export const DynamicMenuBtn = () => (
   <div
@@ -14,7 +14,7 @@ export const DynamicMenuBtn = () => (
   >
     Filter
   </div>
-)
+);
 
 const DynamicMenuContentView = props => {
 
