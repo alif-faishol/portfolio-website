@@ -6,12 +6,14 @@ import ContentContainer from 'App/common/styles/ContentContainer';
 const RootContainer = styled.div`
   margin-top: 20px;
   font-size: 14px;
+  padding: 15px 15px;
   background-color: ${({ colorscheme }) => colorscheme.highlight};
   & div.info {
     display: flex;
-    height: 70px;
     justify-content: flex-end;
     align-items: center;
+    line-height: 2.3;
+    text-align: right;
   }
   & a:hover {
     opacity: 0.8;

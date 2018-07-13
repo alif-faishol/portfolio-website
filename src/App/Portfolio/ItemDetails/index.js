@@ -15,14 +15,12 @@ const RootContainer = styled.div`
   width: 100%;
   height: 100%;
   transition: all 0.5s;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: auto;
   & .content-container {
     margin-top: 75px;
     max-width: 1000px;
     width: 100%;
     height: 0;
-    position: relative;
     & .content {
       margin-bottom: 50px;
       display: flex;
@@ -135,7 +133,7 @@ class ItemDetails extends React.Component {
                       height="349"
                       src={detailsData.data.videos[0]}
                       frameBorder="0"
-                      allowFullscreen
+                      allowFullScreen
                     />
                   </VideoView>
                 </div>

@@ -7,7 +7,8 @@ import { changeMenuContent } from 'redux/modules/menu';
 import Button from 'App/common/styles/Button';
 
 const RootContainer = styled.div`
-  width: 100%;
+  width: 95%;
+  margin: 0 auto;
   justify-content: space-between;
   display: flex;
   height: 50px;

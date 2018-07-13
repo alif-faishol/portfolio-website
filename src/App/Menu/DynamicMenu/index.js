@@ -6,7 +6,8 @@ import { toggleMenu } from 'redux/modules/menu';
 import Button from 'App/common/styles/Button';
 
 const RootContainer = styled.div`
-  width: 100%;
+  width: 95%;
+  margin: 0 auto;
   display: flex;
   font-size: 20px;
   flex-flow: column;

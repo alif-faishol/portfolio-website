@@ -13,7 +13,6 @@ const RootContainer = styled.div`
 const ContainerHelper = styled.div`
   width: 100rem;
   overflow: hidden;
-  margin: 0 15px;
 `;
 
 const ContentContainer = ({ children }) => (
