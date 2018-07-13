@@ -21,8 +21,8 @@ const RootContainer = styled.div`
     max-width: 1000px;
     width: 100%;
     height: 0;
+    position: relative;
     & .content {
-      margin-bottom: 50px;
       display: flex;
       flex-flow: column;
       & .desc {
@@ -118,39 +118,38 @@ class ItemDetails extends React.Component {
           onClick={e => e.stopPropagation()}
         >
           {detailsData.show && (
-            detailsData.data.videos
+          <div className="content">
+            <div className="desc">
+              <span>
+                {detailsData.data.title}
+              </span>
+            </div>
+            {detailsData.data.videos
               ? (
-                <div className="content">
-                  <div className="desc">
-                    <span>
-                      {detailsData.data.title}
-                    </span>
-                  </div>
-                  <VideoView>
-                    <iframe
-                      title={detailsData.data.title}
-                      width="560"
-                      height="349"
-                      src={detailsData.data.videos[0]}
-                      frameBorder="0"
-                      allowFullScreen
-                    />
-                  </VideoView>
-                </div>
+                <VideoView>
+                  <iframe
+                    title={detailsData.data.title}
+                    width="560"
+                    height="349"
+                    src={detailsData.data.videos[0]}
+                    frameBorder="0"
+                    allowFullScreen
+                  />
+                </VideoView>
               )
               : (
-                <div className="content">
-                  <div className="desc">
-                    <span>
-                      {detailsData.data.title}
-                    </span>
-                  </div>
-                  <ImageSlider
-                    images={detailsData.data.images}
-                    title={detailsData.data.title}
-                  />
-                </div>
-              )
+                <ImageSlider
+                  images={detailsData.data.images}
+                  title={detailsData.data.title}
+                />
+              )}
+              <div
+                style={{
+                  height: 50,
+                }}
+                onClick={() => { this.inOutAnimate(false); }}
+              />
+          </div>
           )}
         </div>
       </RootContainer>
