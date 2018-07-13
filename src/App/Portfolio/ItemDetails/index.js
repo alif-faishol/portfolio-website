@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toggleDetailsData } from 'redux/modules/portfolio';
 import styled from 'styled-components';
 import { TweenMax, Power3 } from 'gsap';
-import ImageSlider from './ImageSlider';
+import KeyEventHandler from 'react-keyboard-event-handler';
 
 const RootContainer = styled.div`
   position: fixed;
@@ -25,18 +25,23 @@ const RootContainer = styled.div`
     & .content {
       display: flex;
       flex-flow: column;
-      & .desc {
+      &>* {
+        width: 100%;
+        margin-top: 25px;
         box-shadow: 0 5px 55px 5px rgba(0, 0, 0, 0.5);
-        margin-bottom: 25px;
+      }
+      & .desc {
         box-sizing: border-box;
         background-color: black;
         color: white;
         font-size: 24px;
+        margin-top: 0;
         padding: 15px 5%;
       }
-      & .desc + * {
-        box-shadow: 0 5px 55px 5px rgba(0, 0, 0, 0.5);
-        box-sizing: content-box;
+      & .invisibleClose {
+        height: 50px;
+        margin-top: 0;
+        box-shadow: none;
       }
     }
   }
@@ -116,13 +121,16 @@ class ItemDetails extends React.Component {
           ref={(ref) => { this.content = ref; }}
           className="content-container"
           onClick={e => e.stopPropagation()}
+          onKeyDown={e => this.inOutAnimate(false)}
+          tabIndex={1}
         >
           {detailsData.show && (
           <div className="content">
             <div className="desc">
-              <span>
+              <div>
                 {detailsData.data.title}
-              </span>
+              </div>
+              <div />
             </div>
             {detailsData.data.videos
               ? (
@@ -138,20 +146,29 @@ class ItemDetails extends React.Component {
                 </VideoView>
               )
               : (
-                <ImageSlider
-                  images={detailsData.data.images}
-                  title={detailsData.data.title}
-                />
+                detailsData.data.images.map(image => (
+                  <img
+                    key={image}
+                    src={image}
+                    alt={detailsData.data.title}
+                  />
+                ))
               )}
-              <div
-                style={{
-                  height: 50,
-                }}
-                onClick={() => { this.inOutAnimate(false); }}
-              />
+            <div
+              className="invisibleClose"
+              onClick={() => { this.inOutAnimate(false); }}
+            />
           </div>
           )}
         </div>
+        <KeyEventHandler
+          handleKeys={['esc']}
+          onKeyEvent={() => {
+            if (detailsData.show) {
+              this.inOutAnimate(false)
+            }
+          }}
+        />
       </RootContainer>
     );
   }

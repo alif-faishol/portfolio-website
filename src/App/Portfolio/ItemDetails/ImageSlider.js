@@ -10,10 +10,6 @@ const ImageSlider = styled.div`
 
 export default ({ images, title }) => (
   <ImageSlider>
-    <img
-      className="image"
-      src={images[0]}
-      alt={title}
-    />
+    {images.map(image => <img key={image} src={image} alt={title} />)}
   </ImageSlider>
 );
