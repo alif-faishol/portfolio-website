@@ -22,7 +22,7 @@ const Button = styled.div`
   margin-left: 20px;
   width: 70px;
   cursor: ${({ active }) => (active ? 'pointer' : 'not-allowed')};
-  opacity: ${({ active }) => (active ? '1' : '.5')};
+  color: ${({ active }) => (active ? 'black' : 'grey')};
   &:hover {
     background-color: ${({ active, colorscheme }) => active && colorscheme.highlight};
   }
