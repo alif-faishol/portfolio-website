@@ -32,11 +32,29 @@ const RootContainer = styled.div`
       }
       & .desc {
         box-sizing: border-box;
-        background-color: black;
-        color: white;
-        font-size: 24px;
         margin-top: 0;
-        padding: 15px 5%;
+        background-color: white;
+        & .title {
+          font-size: 24px;
+          background-color: black;
+          padding: 15px;
+          color: white;
+        }
+        & .body {
+          padding: 15px;
+          padding-top: 20px;
+          line-height: 1.2;
+          & .tool {
+            display: inline-block;
+            padding: 5px 10px 2px 10px;
+            margin-right: 10px;
+            margin-top: 10px;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+            font-size: 15px;
+          }
+        }
       }
       & .invisibleClose {
         height: 50px;
@@ -106,7 +124,10 @@ class ItemDetails extends React.Component {
   }
 
   render() {
-    const { detailsData } = this.props;
+    const {
+      colorscheme,
+      detailsData,
+    } = this.props;
     return (
       <RootContainer
         style={{
@@ -121,14 +142,28 @@ class ItemDetails extends React.Component {
           ref={(ref) => { this.content = ref; }}
           className="content-container"
           onClick={e => e.stopPropagation()}
-          onKeyDown={e => this.inOutAnimate(false)}
-          tabIndex={1}
         >
           {detailsData.show && (
           <div className="content">
             <div className="desc">
-              <div>
+              <div className="title">
                 {detailsData.data.title}
+              </div>
+              <div className="body">
+                {detailsData.data.body}
+                <div>
+                  {detailsData.data.tools.map((tool, i) => (
+                    <div
+                      className="tool"
+                      key={tool}
+                      style={{
+                        backgroundColor: colorscheme[`accent${i + 1}`],
+                      }}
+                    >
+                      {tool}
+                    </div>
+                  ))}
+                </div>
               </div>
               <div />
             </div>
@@ -165,7 +200,7 @@ class ItemDetails extends React.Component {
           handleKeys={['esc']}
           onKeyEvent={() => {
             if (detailsData.show) {
-              this.inOutAnimate(false)
+              this.inOutAnimate(false);
             }
           }}
         />
@@ -175,7 +210,8 @@ class ItemDetails extends React.Component {
 }
 
 export default connect(
-  ({ portfolio }) => ({
+  ({ main, portfolio }) => ({
+    colorscheme: main.colorscheme,
     detailsData: portfolio.detailsData,
   }),
   dispatch => ({

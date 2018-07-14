@@ -1,65 +1,62 @@
-const root = '/static-data'
-const data = root + '/cms-json/data.json'
+const root = '/static-data';
+const url = `${root}/cms-json/data.json`;
 
-const getPortfolioItems = (args) => {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", data);
-    xhr.onload = () => resolve(resolved(xhr.responseText));
-    xhr.onerror = () => reject(xhr.statusText);
-    xhr.send();
+const getPortfolioItems = args => new Promise((resolve, reject) => {
+  const resolved = (data) => {
+    const sorter = (a, b) => {
+      const check = () => {
+        if (a[args.sortBy] < b[args.sortBy]) {
+          return -1;
+        }
+        if (a[args.sortBy] > b[args.sortBy]) {
+          return 1;
+        }
+        return 0;
+      };
+      return args.sort === 'ASC' ? check() : -check();
+    };
 
-    const resolved = data => {
+    const filterer = item => (args.filter[item.category] !== undefined
+      ? args.filter[item.category]
+      : true
+    );
 
-      const sorter = (a, b) => {
-        const check = () => (a[args.sortBy] < b[args.sortBy]
-        ? -1
-        : (a[args.sortBy] > b[args.sortBy] ? 1 : 0)
-        )
-        return args.sort === 'ASC'
-        ? check()
-        : -check()
-      }
+    const resData = (
+      JSON.parse(data).portfolio.map((item, index) => ({
+        id: index,
+        title: item.name,
+        thumbnail: root + item.images[0],
+        category: item.category,
+        videos: item.videos,
+        tools: item.tools_used,
+        body: item.body,
+        images: item.images.map(image => (
+          root + image
+        )),
+      }))
+    )
+      .filter(filterer)
+      .sort(sorter);
 
-      const filterer = item => {
-        return args.filter[item.category] !== undefined
-          ? args.filter[item.category]
-          : true
-      }
+    return {
+      meta: {
+        totalData: resData.length,
+        totalPage: Math.ceil(resData.length / args.perPage),
+      },
+      data: resData.slice(
+        args.perPage * (args.page - 1),
+        args.perPage * (args.page - 1) + args.perPage,
+      ),
+    };
+  };
 
-      const dataObj = (
-        JSON.parse(data).portfolio.map(
-          (item, index) => ({
-            id: index,
-            title: item.name,
-            thumbnail: root + item.images[0],
-            category: item.category,
-            videos: item.videos,
-            images: item.images.map(item => (
-              root + item
-            ))
-          })
-        )
-      ).filter(filterer)
-
-      return {
-        meta: {
-          totalData: dataObj.length,
-          totalPage: Math.ceil(dataObj.length/args.perPage)
-        },
-        data: (
-          dataObj
-          .sort(sorter)
-          .splice(
-            args.perPage*(args.page-1),
-            args.perPage
-          )
-        )
-      }
-    }
-  })
-}
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.onload = () => resolve(resolved(xhr.responseText));
+  xhr.onerror = () => reject(xhr.statusText);
+  xhr.send();
+});
 
 export default {
-  getPortfolioItems
-}
+  getPortfolioItems,
+};
