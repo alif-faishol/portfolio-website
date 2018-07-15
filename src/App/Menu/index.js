@@ -72,10 +72,6 @@ class Menu extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.prepareComponent();
-  }
-
   componentWillReceiveProps(nextProps) {
     const {
       menuExpanded,
@@ -102,29 +98,7 @@ class Menu extends React.Component {
   }
 
   componentDidUpdate() {
-    this.prepareComponent();
-  }
-
-  prepareComponent = () => {
-    const {
-      match,
-      menuExpanded,
-      menuContent,
-      _toggleMenu,
-      _changeMenuContent,
-    } = this.props;
-    if (match.isExact) {
-      if (!menuExpanded) {
-        _toggleMenu(true);
-      }
-      if (menuContent !== 'home') {
-        _changeMenuContent('home');
-        _toggleMenu(false);
-        _toggleMenu(true);
-      }
-    } else {
-      this.animated.RootContainer.scrollTop = 0;
-    }
+    this.animated.RootContainer.scrollTop = 0;
   }
 
   render() {
@@ -137,6 +111,7 @@ class Menu extends React.Component {
 
     const {
       RootContainerAni,
+      MenuHeaderAni,
     } = this.state;
 
     return (
@@ -145,7 +120,7 @@ class Menu extends React.Component {
           innerRef={(ref) => { this.animated.RootContainer = ref; }}
           colorscheme={colorscheme}
           style={{
-            height: RootContainerAni.height[1],
+            height: RootContainerAni.height[0],
             borderBottom: `${RootContainerAni.borderBottomWidth[1]}px solid black`,
             boxShadow: '3px 3px 2px 0 rgba(0, 0, 0, 0.1)',
             overflow: !onTransition && match.isExact ? 'auto' : 'hidden',
@@ -155,6 +130,7 @@ class Menu extends React.Component {
             <div
               ref={(ref) => { this.animated.MenuHeader = ref; }}
               style={{
+                height: MenuHeaderAni.height[0],
                 overflow: 'hidden',
               }}
             >

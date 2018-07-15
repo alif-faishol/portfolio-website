@@ -1,4 +1,5 @@
 import { createActions, handleActions } from 'redux-actions';
+import { LOCATION_CHANGE } from 'connected-react-router';
 
 export const {
   menu: {
@@ -17,7 +18,7 @@ export const {
 });
 
 const defaultState = {
-  menuExpanded: false,
+  menuExpanded: true,
   menuContent: 'home',
   dynamicMenu: {
     title: '',
@@ -51,6 +52,10 @@ export default handleActions(
       ...state,
       title: payload !== undefined ? payload : defaultState.title,
     }),
+    [LOCATION_CHANGE]: (state, { payload }) => (payload.location.pathname === '/'
+      ? defaultState
+      : state
+    ),
   },
   defaultState,
 );
