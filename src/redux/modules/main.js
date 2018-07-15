@@ -3,15 +3,22 @@ import getColorscheme from 'App/common/themes';
 import commitHash from '../../commit-hash';
 
 export const {
-  toggleTutor,
-  switchColorscheme,
-  updateViewportSize,
-  toggleTransitionStatus,
+  app: {
+    toggleTutor,
+    switchColorscheme,
+    updateViewportSize,
+    toggleTransitionStatus,
+  },
 } = createActions({
-  TOGGLE_TUTOR: status => status,
-  SWITCH_COLORSCHEME: colorscheme => getColorscheme(colorscheme),
-  UPDATE_VIEWPORT_SIZE: () => ({ height: window.innerHeight, width: window.innerWidth }),
-  TOGGLE_TRANSITION_STATUS: status => status,
+  APP: {
+    TOGGLE_TUTOR: status => status,
+    SWITCH_COLORSCHEME: colorscheme => getColorscheme(colorscheme),
+    UPDATE_VIEWPORT_SIZE: () => ({
+      height: window.innerHeight,
+      width: window.innerWidth,
+    }),
+    TOGGLE_TRANSITION_STATUS: status => status,
+  },
 });
 
 const defaultState = {

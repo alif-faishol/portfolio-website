@@ -1,83 +1,61 @@
-import { combineReducers } from 'redux';
+import { createActions, handleActions } from 'redux-actions';
 
-const DATA_LOAD = 'App/Portfolio/DATA_LOAD';
-const LOADING_TOGGLE = 'App/Portfolio/LOADING_TOGGLE';
-const FILTER_CHANGE = 'App/Portfolio/FILTER_CHANGE';
-const DETAILS_LOAD = 'App/Portfolio/ItemDetails/DETAILS_LOAD';
-const DETAILS_TOGGLE = 'App/Portfolio/ItemDetails/DETAILS_TOGGLE';
+export const {
+  portfolio: {
+    loadData,
+    toggleLoading,
+    changeFilter,
+    loadDetailsData,
+    toggleDetailsData,
+  },
+} = createActions({
+  PORTFOLIO: {
+    LOAD_DATA: data => data,
+    TOGGLE_LOADING: status => status,
+    CHANGE_FILTER: filter => filter,
+    LOAD_DETAILS_DATA: data => data,
+    TOGGLE_DETAILS_DATA: status => status,
+  },
+});
 
+const defaultState = {
+  items: {},
+  loading: true,
+  filter: {},
+  detailsData: {
+    show: false,
+    data: {},
+  },
+};
 
-const items = (state = {}, action) => (
-  action.type === DATA_LOAD
-    ? action.value
-    : state
+export default handleActions(
+  {
+    [loadData]: (state, { payload }) => ({
+      ...state,
+      items: payload,
+    }),
+    [toggleLoading]: (state, { payload }) => ({
+      ...state,
+      loading: payload !== undefined ? payload : !state.loading,
+    }),
+    [changeFilter]: (state, { payload }) => ({
+      ...state,
+      filter: payload,
+    }),
+    [loadDetailsData]: (state, { payload }) => ({
+      ...state,
+      detailsData: {
+        ...state.detailsData,
+        data: payload !== undefined ? payload : {},
+      },
+    }),
+    [toggleDetailsData]: (state, { payload }) => ({
+      ...state,
+      detailsData: {
+        ...state.detailsData,
+        show: payload !== undefined ? payload : !state.detailsData.show,
+      },
+    }),
+  },
+  defaultState,
 );
-
-const loading = (state = true, action) => {
-  if (action.type === LOADING_TOGGLE) {
-    return action.value !== undefined ? action.value : !state;
-  }
-  return state;
-};
-
-const filter = (state = {}, action) => {
-  if (action.type === FILTER_CHANGE) {
-    return action.value !== undefined
-      ? { ...state, ...action.value }
-      : {};
-  }
-  return state;
-};
-
-const detailsData = (state = {
-  show: false,
-  data: {},
-}, action) => {
-  switch (action.type) {
-    case DETAILS_LOAD:
-      return {
-        ...state,
-        data: action.value !== undefined ? action.value : {},
-      };
-    case DETAILS_TOGGLE:
-      return {
-        ...state,
-        show: action.value !== undefined ? action.value : !state.show,
-      };
-    default:
-      return state;
-  }
-};
-
-export default combineReducers({
-  items,
-  loading,
-  filter,
-  detailsData,
-});
-
-
-export const loadData = value => ({
-  type: DATA_LOAD,
-  value,
-});
-
-export const toggleLoading = value => ({
-  type: LOADING_TOGGLE,
-  value,
-});
-
-export const changeFilter = value => ({
-  type: FILTER_CHANGE,
-  value,
-});
-
-export const loadDetailsData = value => ({
-  type: DETAILS_LOAD,
-  value,
-});
-
-export const toggleDetailsData = value => ({
-  type: DETAILS_TOGGLE,
-  value,
-});
