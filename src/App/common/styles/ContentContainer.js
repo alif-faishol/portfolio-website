@@ -8,6 +8,9 @@ const RootContainer = styled.div`
   display: flex;
   max-width: 1200px;
   justify-content: center;
+  @media screen and (min-width: 500px) {
+    width: 90%;
+  }
 `;
 
 const ContainerHelper = styled.div`
