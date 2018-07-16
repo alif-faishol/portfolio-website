@@ -12,7 +12,7 @@ export const {
   PORTFOLIO: {
     TOGGLE_LOADING: status => status,
     CHANGE_FILTER: filter => filter,
-    LOAD_DETAILS_DATA: data => data,
+    LOAD_DETAILS_DATA: index => index,
     TOGGLE_DETAILS_DATA: status => status,
   },
 });
@@ -22,13 +22,13 @@ export const loadData = config => (dispatch) => {
   api.getPortfolioItems(config)
     .then((res) => {
       dispatch({
-        type: 'LOAD_DATA',
+        type: 'PORTFOLIO/LOAD_DATA',
         payload: res,
       });
     })
     .catch((err) => {
       dispatch({
-        type: 'LOAD_DATA',
+        type: 'PORTFOLIO/LOAD_DATA',
         payload: err,
         error: true,
       });
@@ -41,13 +41,13 @@ const defaultState = {
   filter: {},
   detailsData: {
     show: false,
-    data: {},
+    index: 0,
   },
 };
 
 export default handleActions(
   {
-    LOAD_DATA: (state, { payload }) => ({
+    'PORTFOLIO/LOAD_DATA': (state, { payload }) => ({
       ...state,
       items: payload,
       loading: false,
@@ -66,7 +66,7 @@ export default handleActions(
       ...state,
       detailsData: {
         ...state.detailsData,
-        data: payload !== undefined ? payload : {},
+        index: payload !== undefined ? payload : 0,
         show: true,
       },
     }),

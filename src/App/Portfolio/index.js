@@ -1,9 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  loadData,
-  loadDetailsData,
-} from 'redux/modules/portfolio';
+import { loadData } from 'redux/modules/portfolio';
 import { confDynamicMenu, confTitle } from 'redux/modules/menu';
 import styled from 'styled-components';
 import PortfolioItem from 'App/Portfolio/PortfolioItem';
@@ -65,15 +62,11 @@ class Portfolio extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-  }
-
   render() {
     const {
       loading,
       items,
       match,
-      _loadDetailsData,
     } = this.props;
     return (
       (loading
@@ -86,17 +79,18 @@ class Portfolio extends React.Component {
           <div>
             <ItemDetails />
             <PortfolioItemsContainer>
-              {items.data.map(item => (
+              {items.data.map(({
+                id,
+                category,
+                images,
+                title,
+              }, i) => (
                 <PortfolioItem
-                  key={item.id}
-                  title={item.title}
-                  thumbnail={item.thumbnail}
-                  images={item.images}
-                  category={item.category}
-                  onKeyDown={e => console.log(e.keyCode)}
-                  onClick={() => {
-                    _loadDetailsData(item);
-                  }}
+                  key={id}
+                  index={i}
+                  category={category}
+                  thumbnail={images[0]}
+                  title={title}
                 />
               ))}
             </PortfolioItemsContainer>
@@ -112,16 +106,16 @@ class Portfolio extends React.Component {
   }
 }
 
-export default connect(
-  ({ portfolio }) => ({
-    items: portfolio.items,
-    filter: portfolio.filter,
-    loading: portfolio.loading,
-  }),
-  dispatch => ({
-    _loadData: data => dispatch(loadData(data)),
-    _confTitle: title => dispatch(confTitle(title)),
-    _confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
-    _loadDetailsData: data => dispatch(loadDetailsData(data)),
-  }),
-)(Portfolio);
+const mapStateToProps = ({ portfolio }) => ({
+  items: portfolio.items,
+  filter: portfolio.filter,
+  loading: portfolio.loading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  _loadData: data => dispatch(loadData(data)),
+  _confTitle: title => dispatch(confTitle(title)),
+  _confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

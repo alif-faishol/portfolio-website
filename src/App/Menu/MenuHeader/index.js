@@ -70,18 +70,18 @@ const ClosedMenu = ({
   </RootContainer>
 );
 
+const mapStateToProps = ({ menu }) => ({
+  dynamicMenu: menu.dynamicMenu,
+  title: menu.title,
+});
 
-export default connect(
-  ({ menu }) => ({
-    dynamicMenu: menu.dynamicMenu,
-    title: menu.title,
-  }),
-  dispatch => ({
-    _toggleMenu: () => {
-      dispatch(toggleMenu());
-    },
-    _changeMenuContent: (content) => {
-      dispatch(changeMenuContent(content));
-    },
-  }),
-)(ClosedMenu);
+const mapDispatchToProps = dispatch => ({
+  _toggleMenu: () => {
+    dispatch(toggleMenu());
+  },
+  _changeMenuContent: (content) => {
+    dispatch(changeMenuContent(content));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClosedMenu);

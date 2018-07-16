@@ -112,8 +112,8 @@ const Paginator = ({
   </Container>
 );
 
-export default connect(
-  ({ main }) => ({
-    colorscheme: main.colorscheme,
-  }),
-)(Paginator);
+const mapStateToProps = ({ main }) => ({
+  colorscheme: main.colorscheme,
+})
+
+export default connect(mapStateToProps)(Paginator);

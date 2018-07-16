@@ -50,17 +50,17 @@ class Menu extends React.Component {
       if (menuExpanded) {
         TweenMax
           .set(target, {
-            ...Object.keys(val).reduce((total, cur) => {
-              total[cur] = val[cur][0];
-              return total;
-            }, {}),
+            ...Object.keys(val).reduce((total, cur) => ({
+              ...total,
+              [cur]: val[cur][0],
+            }), {}),
           });
       }
       TweenMax[menuExpanded ? 'from' : 'to'](target, 0.75, {
-        ...Object.keys(val).reduce((total, cur) => {
-          total[cur] = val[cur][1];
-          return total;
-        }, {}),
+        ...Object.keys(val).reduce((total, cur) => ({
+          ...total,
+          [cur]: val[cur][1],
+        }), {}),
         onComplete() {
           cb();
         },
@@ -76,7 +76,7 @@ class Menu extends React.Component {
       match,
     } = this.props;
     if (
-      (nextProps.menuExpanded !== menuExpanded || match.isExact !== nextProps.match.isExact)
+      (nextProps.menuExpanded !== menuExpanded) || (match.isExact !== nextProps.match.isExact)
     ) {
       const nextState = this.stateConstructor(nextProps.menuContent);
       _toggleTransitionStatus(true);
@@ -121,7 +121,6 @@ class Menu extends React.Component {
           innerRef={(ref) => { this.animated.RootContainer = ref; }}
           colorscheme={colorscheme}
           style={{
-            height: RootContainerAni.height[0],
             borderBottom: `${RootContainerAni.borderBottomWidth[1]}px solid black`,
             boxShadow: '3px 3px 2px 0 rgba(0, 0, 0, 0.1)',
             overflow: !onTransition && match.isExact ? 'auto' : 'hidden',
@@ -138,8 +137,8 @@ class Menu extends React.Component {
               <MenuHeader />
             </div>
             {menuContent === 'home'
-              ? <MenuHome />
-              : <DynamicMenu />
+                ? <MenuHome />
+                : <DynamicMenu />
             }
           </ContentContainer>
         </RootContainer>
@@ -148,26 +147,27 @@ class Menu extends React.Component {
   }
 }
 
-export default connect(
-  state => ({
-    onTransition: state.main.onTransition,
-    showTutor: state.main.showTutor,
-    menuExpanded: state.menu.menuExpanded,
-    menuContent: state.menu.menuContent,
-    colorscheme: state.main.colorscheme,
-  }),
-  dispatch => ({
-    _toggleTutor: () => {
-      dispatch(toggleTutor());
-    },
-    _toggleTransitionStatus: (status) => {
-      dispatch(toggleTransitionStatus(status));
-    },
-    _toggleMenu: (status) => {
-      dispatch(toggleMenu(status));
-    },
-    _changeMenuContent: (content) => {
-      dispatch(changeMenuContent(content));
-    },
-  }),
-)(Menu);
+const mapStateToProps = ({ main, menu }) => ({
+  onTransition: main.onTransition,
+  showTutor: main.showTutor,
+  menuExpanded: menu.menuExpanded,
+  menuContent: menu.menuContent,
+  colorscheme: main.colorscheme,
+});
+
+const mapDispatchToProps = dispatch => ({
+  _toggleTutor: () => {
+    dispatch(toggleTutor());
+  },
+  _toggleTransitionStatus: (status) => {
+    dispatch(toggleTransitionStatus(status));
+  },
+  _toggleMenu: (status) => {
+    dispatch(toggleMenu(status));
+  },
+  _changeMenuContent: (content) => {
+    dispatch(changeMenuContent(content));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

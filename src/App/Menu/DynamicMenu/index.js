@@ -20,14 +20,14 @@ const Layer = styled.div`
   flex: 0 0 50px;
 `;
 
-const MenuContent = ({ dynamicMenu, toggleMenu }) => (
+const MenuContent = ({ dynamicMenu, _toggleMenu }) => (
   <RootContainer>
     <Layer style={{ justifyContent: 'space-between' }}>
       <span>
         {dynamicMenu.title}
       </span>
       <Button
-        onClick={() => toggleMenu(false)}
+        onClick={() => _toggleMenu(false)}
       >
         Close
       </Button>
@@ -36,16 +36,17 @@ const MenuContent = ({ dynamicMenu, toggleMenu }) => (
   </RootContainer>
 );
 
-export default connect(
-  ({ menu }) => ({
-    dynamicMenu: menu.dynamicMenu,
-  }),
-  dispatch => ({
-    changeColorscheme: (colorscheme) => {
-      dispatch(switchColorscheme(colorscheme));
-    },
-    toggleMenu: (status) => {
-      dispatch(toggleMenu(status));
-    },
-  }),
-)(MenuContent);
+const mapStateToProps = ({ menu }) => ({
+  dynamicMenu: menu.dynamicMenu,
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeColorscheme: (colorscheme) => {
+    dispatch(switchColorscheme(colorscheme));
+  },
+  _toggleMenu: (status) => {
+    dispatch(toggleMenu(status));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuContent);

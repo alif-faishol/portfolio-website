@@ -83,47 +83,47 @@ const PageContainer = styled.div`
 `;
 
 const App = ({ colorscheme }) => (
-    <div>
-      <style>
-        {globalStyle(colorscheme.contentBG)}
-      </style>
-      <Route path="/" component={Menu} />
-      <PageContainer>
-        <Route
-          exact
-          path="/portfolio/:page?"
-          render={props => (
-            <MainRouteContainer {...props}>
-              <Portfolio {...props} />
-            </MainRouteContainer>
-          )}
-        />
-        <Route
-          path="/cv"
-          render={props => (
-            <MainRouteContainer {...props}>
-              <CV {...props} />
-            </MainRouteContainer>
-          )}
-        />
-        <Route
-          path="/about"
-          render={props => (
-            <MainRouteContainer {...props}>
-              <About {...props} />
-            </MainRouteContainer>
-          )}
-        />
-      </PageContainer>
-    </div>
+  <div>
+    <style>
+      {globalStyle(colorscheme.contentBG)}
+    </style>
+    <Route path="/" component={Menu} />
+    <PageContainer>
+      <Route
+        exact
+        path="/portfolio/:page?"
+        render={props => (
+          <MainRouteContainer {...props}>
+            <Portfolio {...props} />
+          </MainRouteContainer>
+        )}
+      />
+      <Route
+        path="/cv"
+        render={props => (
+          <MainRouteContainer {...props}>
+            <CV {...props} />
+          </MainRouteContainer>
+        )}
+      />
+      <Route
+        path="/about"
+        render={props => (
+          <MainRouteContainer {...props}>
+            <About {...props} />
+          </MainRouteContainer>
+        )}
+      />
+    </PageContainer>
+  </div>
 );
 
 App.propTypes = {
   colorscheme: PropTypes.object.isRequired,
 };
 
-export default withRouter(connect(
-  ({ main }) => ({
-    colorscheme: main.colorscheme,
-  }),
-)(App));
+const mapStateToProps = ({ main }) => ({
+  colorscheme: main.colorscheme,
+});
+
+export default withRouter(connect(mapStateToProps)(App));

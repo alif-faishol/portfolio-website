@@ -54,9 +54,9 @@ const Footer = ({ commitHash, colorscheme }) => (
   </RootContainer>
 );
 
-export default connect(
-  ({ main }) => ({
-    commitHash: main.commitHash,
-    colorscheme: main.colorscheme,
-  }),
-)(Footer);
+const mapStateToProps = ({ main }) => ({
+  commitHash: main.commitHash,
+  colorscheme: main.colorscheme,
+});
+
+export default connect(mapStateToProps)(Footer);
