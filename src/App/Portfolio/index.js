@@ -1,13 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  loadData,
-  toggleLoading,
-  toggleDetailsData,
-  loadDetailsData,
-} from 'redux/modules/portfolio';
+import { loadData } from 'redux/modules/portfolio';
 import { confDynamicMenu, confTitle } from 'redux/modules/menu';
-import api from 'apiHandler';
 import styled from 'styled-components';
 import PortfolioItem from 'App/Portfolio/PortfolioItem';
 import Loading from 'App/common/animation/Loading';
@@ -34,18 +28,12 @@ class Portfolio extends React.Component {
     const {
       match,
       _loadData,
-      _toggleLoading,
       _confTitle,
       _confDynamicMenu,
     } = this.props;
-    api.getPortfolioItems({
+    _loadData({
       page: match.params.page ? match.params.page : 1,
-    })
-      .then((res) => {
-        _loadData(res);
-        _toggleLoading(false);
-      })
-      .catch(err => console.log(err));
+    });
 
     _confTitle('Portfolio');
 
@@ -61,36 +49,17 @@ class Portfolio extends React.Component {
       filter,
       history,
       match,
-      _toggleLoading,
       _loadData,
     } = this.props;
     if (filter !== nextProps.filter) {
       history.push('/portfolio');
     }
     if (match.params !== nextProps.match.params) {
-      _toggleLoading(true);
-      api.getPortfolioItems({
+      _loadData({
         page: nextProps.match.params.page ? nextProps.match.params.page : 1,
         filter: nextProps.filter,
-      })
-        .then((res) => {
-          _loadData(res);
-          _toggleLoading(false);
-        })
-        .catch(err => console.log(err));
+      });
     }
-  }
-
-  componentWillUnmount() {
-    const {
-      _toggleLoading,
-      _confDynamicMenu,
-      _confTitle,
-    } = this.props;
-
-    _toggleLoading(true);
-    _confDynamicMenu();
-    _confTitle();
   }
 
   render() {
@@ -98,8 +67,6 @@ class Portfolio extends React.Component {
       loading,
       items,
       match,
-      _toggleDetailsData,
-      _loadDetailsData,
     } = this.props;
     return (
       (loading
@@ -112,18 +79,18 @@ class Portfolio extends React.Component {
           <div>
             <ItemDetails />
             <PortfolioItemsContainer>
-              {items.data.map(item => (
+              {items.data.map(({
+                id,
+                category,
+                images,
+                title,
+              }, i) => (
                 <PortfolioItem
-                  key={item.id}
-                  title={item.title}
-                  thumbnail={item.thumbnail}
-                  images={item.images}
-                  category={item.category}
-                  onKeyDown={e => console.log(e.keyCode)}
-                  onClick={() => {
-                    _toggleDetailsData(true);
-                    _loadDetailsData(item);
-                  }}
+                  key={id}
+                  index={i}
+                  category={category}
+                  thumbnail={images[0]}
+                  title={title}
                 />
               ))}
             </PortfolioItemsContainer>
@@ -139,18 +106,16 @@ class Portfolio extends React.Component {
   }
 }
 
-export default connect(
-  ({ portfolio }) => ({
-    items: portfolio.items,
-    filter: portfolio.filter,
-    loading: portfolio.loading,
-  }),
-  dispatch => ({
-    _loadData: data => dispatch(loadData(data)),
-    _toggleLoading: state => dispatch(toggleLoading(state)),
-    _confTitle: title => dispatch(confTitle(title)),
-    _confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
-    _toggleDetailsData: state => dispatch(toggleDetailsData(state)),
-    _loadDetailsData: data => dispatch(loadDetailsData(data)),
-  }),
-)(Portfolio);
+const mapStateToProps = ({ portfolio }) => ({
+  items: portfolio.items,
+  filter: portfolio.filter,
+  loading: portfolio.loading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  _loadData: data => dispatch(loadData(data)),
+  _confTitle: title => dispatch(confTitle(title)),
+  _confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

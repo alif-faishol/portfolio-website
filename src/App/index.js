@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
   Route,
+  withRouter,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -83,49 +83,47 @@ const PageContainer = styled.div`
 `;
 
 const App = ({ colorscheme }) => (
-  <Router>
-    <div>
-      <style>
-        {globalStyle(colorscheme.contentBG)}
-      </style>
-      <Route path="/" component={Menu} />
-      <PageContainer>
-        <Route
-          exact
-          path="/portfolio/:page?"
-          render={props => (
-            <MainRouteContainer {...props}>
-              <Portfolio {...props} />
-            </MainRouteContainer>
-          )}
-        />
-        <Route
-          path="/cv"
-          render={props => (
-            <MainRouteContainer {...props}>
-              <CV {...props} />
-            </MainRouteContainer>
-          )}
-        />
-        <Route
-          path="/about"
-          render={props => (
-            <MainRouteContainer {...props}>
-              <About {...props} />
-            </MainRouteContainer>
-          )}
-        />
-      </PageContainer>
-    </div>
-  </Router>
+  <div>
+    <style>
+      {globalStyle(colorscheme.contentBG)}
+    </style>
+    <Route path="/" component={Menu} />
+    <PageContainer>
+      <Route
+        exact
+        path="/portfolio/:page?"
+        render={props => (
+          <MainRouteContainer {...props}>
+            <Portfolio {...props} />
+          </MainRouteContainer>
+        )}
+      />
+      <Route
+        path="/cv"
+        render={props => (
+          <MainRouteContainer {...props}>
+            <CV {...props} />
+          </MainRouteContainer>
+        )}
+      />
+      <Route
+        path="/about"
+        render={props => (
+          <MainRouteContainer {...props}>
+            <About {...props} />
+          </MainRouteContainer>
+        )}
+      />
+    </PageContainer>
+  </div>
 );
 
 App.propTypes = {
   colorscheme: PropTypes.object.isRequired,
 };
 
-export default connect(
-  ({ main }) => ({
-    colorscheme: main.colorscheme,
-  }),
-)(App);
+const mapStateToProps = ({ main }) => ({
+  colorscheme: main.colorscheme,
+});
+
+export default withRouter(connect(mapStateToProps)(App));

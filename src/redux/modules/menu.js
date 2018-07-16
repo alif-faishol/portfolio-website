@@ -1,81 +1,61 @@
-import { combineReducers } from 'redux';
+import { createActions, handleActions } from 'redux-actions';
+import { LOCATION_CHANGE } from 'connected-react-router';
 
-const MENU_TOGGLE = 'App/Menu/MENU_TOGGLE';
-const MENU_CONTENT_CHANGE = 'App/Menu/MENU_CONTENT_CHANGE';
-const DYNAMIC_MENU_CONF = 'App/Menu/DYNAMIC_MENU_CONF';
-const TITLE_CONF = 'App/Menu/TITLE_CONF';
-
-
-const menuExpanded = (state = false, action) => {
-  switch (action.type) {
-    case MENU_TOGGLE:
-      return action.toBe !== undefined ? action.toBe : !state;
-    default:
-      return state;
-  }
-};
-
-const menuContent = (state = 'home', action) => {
-  switch (action.type) {
-    case MENU_CONTENT_CHANGE:
-      return action.content;
-    default:
-      return state;
-  }
-};
-
-export const dynamicMenuDefault = {
-  title: 'Adjust settings',
-  button: 'Settings',
-  link: null,
-  content: null,
-};
-
-const dynamicMenu = (state = dynamicMenuDefault, action) => {
-  switch (action.type) {
-    case DYNAMIC_MENU_CONF:
-      return action.conf !== undefined
-        ? { ...dynamicMenuDefault, ...action.conf }
-        : dynamicMenuDefault;
-    default:
-      return state;
-  }
-};
-
-const title = (state = 'Alif Faishol', action) => {
-  switch (action.type) {
-    case TITLE_CONF:
-      return action.string !== undefined ? action.string : 'Alif Faishol';
-    default:
-      return state;
-  }
-};
-
-
-export default combineReducers({
-  menuExpanded,
-  menuContent,
-  dynamicMenu,
-  title,
+export const {
+  menu: {
+    toggleMenu,
+    changeMenuContent,
+    confTitle,
+    confDynamicMenu,
+  },
+} = createActions({
+  MENU: {
+    TOGGLE_MENU: status => status,
+    CHANGE_MENU_CONTENT: content => content,
+    CONF_TITLE: title => title,
+    CONF_DYNAMIC_MENU: config => config,
+  },
 });
 
+const defaultState = {
+  menuExpanded: true,
+  menuContent: 'home',
+  dynamicMenu: {
+    title: '',
+    button: '',
+    link: null,
+    content: null,
+  },
+  title: 'Alif Faishol',
+};
 
-export const confTitle = string => ({
-  type: TITLE_CONF,
-  string,
-});
-
-export const confDynamicMenu = conf => ({
-  type: DYNAMIC_MENU_CONF,
-  conf,
-});
-
-export const toggleMenu = to => ({
-  type: MENU_TOGGLE,
-  toBe: to,
-});
-
-export const changeMenuContent = content => ({
-  type: MENU_CONTENT_CHANGE,
-  content,
-});
+export default handleActions(
+  {
+    [toggleMenu]: (state, { payload }) => ({
+      ...state,
+      menuExpanded: payload !== undefined ? payload : !state.menuExpanded,
+    }),
+    [changeMenuContent]: (state, { payload }) => ({
+      ...state,
+      menuContent: payload,
+    }),
+    [confDynamicMenu]: (state, { payload }) => ({
+      ...state,
+      dynamicMenu: payload !== undefined
+        ? ({
+          ...state.dynamicMenu,
+          ...payload,
+        })
+        : defaultState.dynamicMenu,
+    }),
+    [confTitle]: (state, { payload }) => ({
+      ...state,
+      title: payload !== undefined ? payload : defaultState.title,
+    }),
+    [LOCATION_CHANGE]: (state, { payload }) => (payload.location.pathname === '/'
+      ? defaultState
+      : state
+    ),
+  },
+  defaultState,
+);

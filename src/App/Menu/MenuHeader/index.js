@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { toggleMenu } from 'redux/modules/menu';
-import { changeMenuContent } from 'redux/modules/menu';
+import { toggleMenu, changeMenuContent } from 'redux/modules/menu';
 import Button from 'App/common/styles/Button';
 
 const RootContainer = styled.div`
@@ -21,16 +20,15 @@ const Column = styled.div`
   flex: 1 0 100px;
 `;
 
-const ClosedMenu = props => (
+const ClosedMenu = ({
+  title,
+  dynamicMenu,
+  _changeMenuContent,
+  _toggleMenu,
+}) => (
   <RootContainer>
     <Column>
-      <Link
-        to="/"
-        onClick={() => {
-          props.changeMenuContent('home')
-          props.toggleMenu(true)
-        }}
-      >
+      <Link to="/">
         <Button>
           Home
         </Button>
@@ -38,52 +36,52 @@ const ClosedMenu = props => (
     </Column>
     <Column style={{ flexGrow: 9 }}>
       <span style={{ margin: '0 auto' }}>
-        {props.title}
+        {title}
       </span>
     </Column>
     <Column>
-      {typeof(props.dynamicMenu.link) === 'string'
-          ? (
-            <a href={props.dynamicMenu.link}>
-              <Button
-                style={{
-                  marginLeft: 'auto',
-                }}
-              >
-                {props.dynamicMenu.name}
-              </Button>
-            </a>
-          )
-          : (
+      {typeof (dynamicMenu.link) === 'string'
+        ? (
+          <a href={dynamicMenu.link}>
             <Button
-              onClick={() => {
-                props.changeMenuContent('dynamicMenu');
-                props.toggleMenu();
-              }}
               style={{
                 marginLeft: 'auto',
               }}
             >
-              {props.dynamicMenu.button}
+              {dynamicMenu.name}
             </Button>
-          )
+          </a>
+        )
+        : (
+          <Button
+            onClick={() => {
+              _changeMenuContent('dynamicMenu');
+              _toggleMenu();
+            }}
+            style={{
+              marginLeft: 'auto',
+            }}
+          >
+            {dynamicMenu.button}
+          </Button>
+        )
       }
     </Column>
   </RootContainer>
 );
 
+const mapStateToProps = ({ menu }) => ({
+  dynamicMenu: menu.dynamicMenu,
+  title: menu.title,
+});
 
-export default connect(
-  ({ menu }) => ({
-    dynamicMenu: menu.dynamicMenu,
-    title: menu.title,
-  }),
-  dispatch => ({
-    toggleMenu: () => {
-      dispatch(toggleMenu());
-    },
-    changeMenuContent: (content) => {
-      dispatch(changeMenuContent(content));
-    },
-  }),
-)(ClosedMenu);
+const mapDispatchToProps = dispatch => ({
+  _toggleMenu: () => {
+    dispatch(toggleMenu());
+  },
+  _changeMenuContent: (content) => {
+    dispatch(changeMenuContent(content));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClosedMenu);

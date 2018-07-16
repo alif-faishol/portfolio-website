@@ -62,16 +62,17 @@ class MainRouteContainer extends React.Component {
   }
 }
 
-export default connect(
-  ({ main, menu }) => ({
-    viewportSize: main.viewportSize,
-    menuExpanded: menu.menuExpanded,
-    menuContent: menu.menuContent,
-    onTransition: main.onTransition,
-  }),
-  dispatch => ({
-    _toggleMenu: (toBe) => {
-      dispatch(toggleMenu(toBe));
-    },
-  }),
-)(MainRouteContainer);
+const mapStateToProps = ({ main, menu }) => ({
+  viewportSize: main.viewportSize,
+  menuExpanded: menu.menuExpanded,
+  menuContent: menu.menuContent,
+  onTransition: main.onTransition,
+});
+
+const mapDispatchToProps = dispatch => ({
+  _toggleMenu: (toBe) => {
+    dispatch(toggleMenu(toBe));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainRouteContainer);

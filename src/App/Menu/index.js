@@ -46,24 +46,21 @@ class Menu extends React.Component {
     );
     this.state = this.stateConstructor(props.menuContent);
     this.animated = {};
-    this.animate = (target, val, cb = (() => null)) => {
-      const {
-        menuExpanded,
-      } = this.props;
-      if (!menuExpanded) {
+    this.animate = (target, val, cb = (() => null), menuExpanded) => {
+      if (menuExpanded) {
         TweenMax
           .set(target, {
-            ...Object.keys(val).reduce((total, cur) => {
-              total[cur] = val[cur][0];
-              return total;
-            }, {}),
+            ...Object.keys(val).reduce((total, cur) => ({
+              ...total,
+              [cur]: val[cur][0],
+            }), {}),
           });
       }
-      TweenMax[menuExpanded ? 'to' : 'from'](target, 0.75, {
-        ...Object.keys(val).reduce((total, cur) => {
-          total[cur] = val[cur][1];
-          return total;
-        }, {}),
+      TweenMax[menuExpanded ? 'from' : 'to'](target, 0.75, {
+        ...Object.keys(val).reduce((total, cur) => ({
+          ...total,
+          [cur]: val[cur][1],
+        }), {}),
         onComplete() {
           cb();
         },
@@ -72,23 +69,22 @@ class Menu extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.prepareComponent();
-  }
-
   componentWillReceiveProps(nextProps) {
     const {
       menuExpanded,
       _toggleTransitionStatus,
+      match,
     } = this.props;
     if (
-      (nextProps.menuExpanded !== menuExpanded)
+      (nextProps.menuExpanded !== menuExpanded) || (match.isExact !== nextProps.match.isExact)
     ) {
       const nextState = this.stateConstructor(nextProps.menuContent);
       _toggleTransitionStatus(true);
       this.animate(
         this.animated.RootContainer,
         nextState.RootContainerAni,
+        () => null,
+        nextProps.menuExpanded,
       );
       this.animate(
         this.animated.MenuHeader,
@@ -97,34 +93,13 @@ class Menu extends React.Component {
           _toggleTransitionStatus(false);
           this.setState(nextState);
         },
+        nextProps.menuExpanded,
       );
     }
   }
 
   componentDidUpdate() {
-    this.prepareComponent();
-  }
-
-  prepareComponent = () => {
-    const {
-      match,
-      menuExpanded,
-      menuContent,
-      _toggleMenu,
-      _changeMenuContent,
-    } = this.props;
-    if (match.isExact) {
-      if (!menuExpanded) {
-        _toggleMenu(true);
-      }
-      if (menuContent !== 'home') {
-        _changeMenuContent('home');
-        _toggleMenu(false);
-        _toggleMenu(true);
-      }
-    } else {
-      this.animated.RootContainer.scrollTop = 0;
-    }
+    this.animated.RootContainer.scrollTop = 0;
   }
 
   render() {
@@ -137,6 +112,7 @@ class Menu extends React.Component {
 
     const {
       RootContainerAni,
+      MenuHeaderAni,
     } = this.state;
 
     return (
@@ -145,7 +121,6 @@ class Menu extends React.Component {
           innerRef={(ref) => { this.animated.RootContainer = ref; }}
           colorscheme={colorscheme}
           style={{
-            height: RootContainerAni.height[1],
             borderBottom: `${RootContainerAni.borderBottomWidth[1]}px solid black`,
             boxShadow: '3px 3px 2px 0 rgba(0, 0, 0, 0.1)',
             overflow: !onTransition && match.isExact ? 'auto' : 'hidden',
@@ -155,14 +130,15 @@ class Menu extends React.Component {
             <div
               ref={(ref) => { this.animated.MenuHeader = ref; }}
               style={{
+                height: MenuHeaderAni.height[0],
                 overflow: 'hidden',
               }}
             >
               <MenuHeader />
             </div>
             {menuContent === 'home'
-              ? <MenuHome />
-              : <DynamicMenu />
+                ? <MenuHome />
+                : <DynamicMenu />
             }
           </ContentContainer>
         </RootContainer>
@@ -171,26 +147,27 @@ class Menu extends React.Component {
   }
 }
 
-export default connect(
-  state => ({
-    onTransition: state.main.onTransition,
-    showTutor: state.main.showTutor,
-    menuExpanded: state.menu.menuExpanded,
-    menuContent: state.menu.menuContent,
-    colorscheme: state.main.colorscheme,
-  }),
-  dispatch => ({
-    _toggleTutor: () => {
-      dispatch(toggleTutor());
-    },
-    _toggleTransitionStatus: (status) => {
-      dispatch(toggleTransitionStatus(status));
-    },
-    _toggleMenu: (status) => {
-      dispatch(toggleMenu(status));
-    },
-    _changeMenuContent: (content) => {
-      dispatch(changeMenuContent(content));
-    },
-  }),
-)(Menu);
+const mapStateToProps = ({ main, menu }) => ({
+  onTransition: main.onTransition,
+  showTutor: main.showTutor,
+  menuExpanded: menu.menuExpanded,
+  menuContent: menu.menuContent,
+  colorscheme: main.colorscheme,
+});
+
+const mapDispatchToProps = dispatch => ({
+  _toggleTutor: () => {
+    dispatch(toggleTutor());
+  },
+  _toggleTransitionStatus: (status) => {
+    dispatch(toggleTransitionStatus(status));
+  },
+  _toggleMenu: (status) => {
+    dispatch(toggleMenu(status));
+  },
+  _changeMenuContent: (content) => {
+    dispatch(changeMenuContent(content));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

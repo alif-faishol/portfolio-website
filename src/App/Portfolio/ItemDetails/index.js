@@ -184,27 +184,33 @@ class ItemDetails extends React.Component {
   }
 
   prepareComponent = () => {
-    const { detailsData } = this.props;
-    document.body.style.overflow = detailsData.show
+    const { detailsData: { show } } = this.props;
+    document.body.style.overflow = show
       ? 'hidden'
       : 'initial';
 
-    this.inOutAnimate(undefined, detailsData.show);
+    this.inOutAnimate(undefined, show);
   }
 
   render() {
     const {
       colorscheme,
-      detailsData,
+      items: {
+        data,
+      },
+      detailsData: {
+        index,
+        show,
+      },
     } = this.props;
     return (
       <RootContainer
         style={{
-          display: detailsData.show
+          display: show
             ? 'flex'
             : 'none',
         }}
-        onClick={() => { this.inOutAnimate(false, detailsData.show); }}
+        onClick={() => { this.inOutAnimate(false, show); }}
         innerRef={(ref) => { this.RootContainer = ref; }}
       >
         <div
@@ -212,7 +218,7 @@ class ItemDetails extends React.Component {
           className="content-container"
           onClick={e => e.stopPropagation()}
         >
-          {detailsData.show && (
+          {show && (
           <div className="content">
             <div
               className="desc"
@@ -220,21 +226,21 @@ class ItemDetails extends React.Component {
             >
               <div className="header">
                 <div className="title">
-                  {detailsData.data.title}
+                  {data[index].title}
                 </div>
                 <div
                   className="closeBtn"
-                  onClick={() => this.inOutAnimate(false, detailsData.show)}
+                  onClick={() => this.inOutAnimate(false, show)}
                 />
               </div>
-              {detailsData.data.body && detailsData.data.body.length > 0 && (
+              {data[index].body && data[index].body.length > 0 && (
                 <div className="body">
-                  {detailsData.data.body}
+                  {data[index].body}
                 </div>
               )}
-              {detailsData.data.tools && detailsData.data.tools.length > 0 && (
+              {data[index].tools && data[index].tools.length > 0 && (
                 <div className="tools">
-                  {detailsData.data.tools.map((tool, i) => (
+                  {data[index].tools.map((tool, i) => (
                     <div
                       className="tool"
                       key={tool}
@@ -248,34 +254,34 @@ class ItemDetails extends React.Component {
                 </div>
               )}
             </div>
-            {detailsData.data.videos
+            {data[index].videos
               ? (
                 <VideoView>
                   <iframe
-                    title={detailsData.data.title}
+                    title={data[index].title}
                     width="560"
                     height="349"
-                    src={detailsData.data.videos[0]}
+                    src={data[index].videos[0]}
                     frameBorder="0"
                     style={{
-                      backgroundImage: `url(${detailsData.data.images[0]})`,
+                      backgroundImage: `url(${data[index].images[0]})`,
                     }}
                     allowFullScreen
                   />
                 </VideoView>
               )
               : (
-                detailsData.data.images.map(image => (
+                data[index].images.map(image => (
                   <img
                     key={image}
                     src={image}
-                    alt={detailsData.data.title}
+                    alt={data[index].title}
                   />
                 ))
               )}
             <div
               className="invisibleClose"
-              onClick={() => { this.inOutAnimate(false, detailsData.show); }}
+              onClick={() => { this.inOutAnimate(false, show); }}
             />
           </div>
           )}
@@ -283,8 +289,8 @@ class ItemDetails extends React.Component {
         <KeyEventHandler
           handleKeys={['esc']}
           onKeyEvent={() => {
-            if (detailsData.show) {
-              this.inOutAnimate(false, detailsData.show);
+            if (show) {
+              this.inOutAnimate(false, show);
             }
           }}
         />
@@ -293,12 +299,14 @@ class ItemDetails extends React.Component {
   }
 }
 
-export default connect(
-  ({ main, portfolio }) => ({
-    colorscheme: main.colorscheme,
-    detailsData: portfolio.detailsData,
-  }),
-  dispatch => ({
-    toggleDetailsData: state => dispatch(toggleDetailsData(state)),
-  }),
-)(ItemDetails);
+const mapStateToProps = ({ main, portfolio }) => ({
+  colorscheme: main.colorscheme,
+  detailsData: portfolio.detailsData,
+  items: portfolio.items,
+});
+
+const mapDispatchToProps = dispatch => ({
+  toggleDetailsData: state => dispatch(toggleDetailsData(state)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemDetails);

@@ -25,7 +25,6 @@ const getPortfolioItems = args => new Promise((resolve, reject) => {
       JSON.parse(data).portfolio.map((item, index) => ({
         id: index,
         title: item.name,
-        thumbnail: root + item.images[0],
         category: item.category,
         videos: item.videos,
         tools: item.tools_used,

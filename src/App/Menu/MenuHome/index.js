@@ -115,12 +115,13 @@ const MenuHome = ({ viewportSize, colorscheme, _toggleMenu }) => (
   </RootContainer>
 );
 
-export default connect(
-  ({ main }) => ({
-    colorscheme: main.colorscheme,
-    viewportSize: main.viewportSize,
-  }),
-  dispatch => ({
-    _toggleMenu: status => dispatch(toggleMenu(status)),
-  }),
-)(MenuHome);
+const mapStateToProps = ({ main }) => ({
+  colorscheme: main.colorscheme,
+  viewportSize: main.viewportSize,
+});
+
+const mapDispatchToProps = dispatch => ({
+  _toggleMenu: status => dispatch(toggleMenu(status)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuHome);

@@ -1,6 +1,7 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import styled from 'styled-components'
+import React from 'react';
+import { connect } from 'react-redux';
+import { loadDetailsData } from 'redux/modules/portfolio';
+import styled from 'styled-components';
 
 const RootContainer = styled.div`
   flex: 0 0 300px;
@@ -14,7 +15,6 @@ const RootContainer = styled.div`
     color: white;
     padding: 5px;
     margin-right: auto;
-    background-color: ${props => props.color};
   }
   & div.square {
     box-shadow: inset 0 0 0 2px black, 3px 3px 2px 0 rgba(0, 0, 0, 0.1);
@@ -29,33 +29,58 @@ const RootContainer = styled.div`
     margin-top: 5%;
     text-align: center;
   }
-`
+`;
 
-const PortfolioItem = props => (
-  <RootContainer
-    color={props.colorscheme[
-      props.category === "Graphic Design"
-        ? 'accent1'
-        : (props.category === "Motion Graphics"
-        ? 'accent2' : 'accent3') 
-    ]}
-    onClick={props.onClick}
-  >
-    <div
-      className='category'
-    >{props.category}
-    </div>
-    <div
-      style={{backgroundImage: `url(${props.thumbnail})`}}
-      className='square'
-    />
-    <div className='title'>{props.title}</div>
-  </RootContainer>
-)
+const PortfolioItem = ({
+  _loadDetailsData,
+  colorscheme,
+  index,
+  category,
+  thumbnail,
+  title,
+}) => {
+  let color;
+  switch (category) {
+    case 'Graphic Design':
+      color = 'accent1';
+      break;
+    case 'Motion Graphics':
+      color = 'accent2';
+      break;
+    default:
+      color = 'accent3';
+  }
+  return (
+    <RootContainer>
+      <div
+        className="category"
+        style={{
+          backgroundColor: colorscheme[color],
+        }}
+      >
+        {category}
+      </div>
+      <div
+        onKeyDown={e => e.keyCode === 13 && _loadDetailsData(index)}
+        onClick={() => _loadDetailsData(index)}
+        tabIndex={0}
+        role="button"
+        style={{ backgroundImage: `url(${thumbnail})` }}
+        className="square"
+      />
+      <div className="title">
+        {title}
+      </div>
+    </RootContainer>
+  );
+};
 
-export default connect(
-  ({main}) => ({
-    colorscheme: main.colorscheme
-  })
-)(PortfolioItem)
+const mapStateToProps = ({ main }) => ({
+  colorscheme: main.colorscheme,
+});
 
+const mapDispatchToProps = dispatch => ({
+  _loadDetailsData: data => dispatch(loadDetailsData(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PortfolioItem);

@@ -1,81 +1,58 @@
-import { combineReducers } from 'redux';
+import { createActions, handleActions } from 'redux-actions';
 import getColorscheme from 'App/common/themes';
 import commitHash from '../../commit-hash';
 
-// Action Types
-const TUTOR_TOGGLE = 'App/TUTOR_TOGGLE';
-const COLORSCHEME_SWITCH = 'App/COLORSCHEME_SWITCH';
-const VIEWPORT_SIZE_UPDATE = 'App/VIEWPORT_SIZE_UPDATE';
-const TRANSITION_STATUS_TOGGLE = 'App/TRANSITION_STATUS_TOGGLE';
-
-
-// Reducers
-const showTutor = (state = true, action) => {
-  switch (action.type) {
-    case TUTOR_TOGGLE:
-      return action.status ? action.status : !state;
-    default:
-      return state;
-  }
-};
-
-const viewportSize = (state = {
-  height: window.innerHeight,
-  width: window.innerWidth,
-}, action) => {
-  if (action.type === VIEWPORT_SIZE_UPDATE) {
-    return { ...action.newSize };
-  }
-  return state;
-};
-
-const colorscheme = (state = getColorscheme('light'), action) => {
-  switch (action.type) {
-    case COLORSCHEME_SWITCH:
-      return action.colorscheme;
-    default:
-      return state;
-  }
-};
-
-const onTransition = (state = false, action) => {
-  switch (action.type) {
-    case TRANSITION_STATUS_TOGGLE:
-      return action.status !== undefined ? action.status : !state;
-    default:
-      return state;
-  }
-};
-
-export default combineReducers({
-  showTutor,
-  viewportSize,
-  colorscheme,
-  onTransition,
-  commitHash: () => commitHash,
-});
-
-
-// Action Creators
-export const toggleTutor = status => ({
-  type: TUTOR_TOGGLE,
-  status,
-});
-
-export const updateViewportSize = () => ({
-  type: VIEWPORT_SIZE_UPDATE,
-  newSize: {
-    height: window.innerHeight,
-    width: window.innerWidth,
+export const {
+  app: {
+    toggleTutor,
+    switchColorscheme,
+    updateViewportSize,
+    toggleTransitionStatus,
+  },
+} = createActions({
+  APP: {
+    TOGGLE_TUTOR: status => status,
+    SWITCH_COLORSCHEME: colorscheme => getColorscheme(colorscheme),
+    UPDATE_VIEWPORT_SIZE: () => ({
+      height: window.innerHeight,
+      width: window.innerWidth,
+    }),
+    TOGGLE_TRANSITION_STATUS: status => status,
   },
 });
 
-export const switchColorscheme = scheme => ({
-  type: COLORSCHEME_SWITCH,
-  colorscheme: getColorscheme(scheme),
-});
+const defaultState = {
+  showTutor: true,
+  viewportSize: {
+    height: window.innerHeight,
+    width: window.innerWidth,
+  },
+  colorscheme: getColorscheme('light'),
+  onTransition: false,
+  commitHash,
+};
 
-export const toggleTransitionStatus = status => ({
-  type: TRANSITION_STATUS_TOGGLE,
-  status,
-});
+export default handleActions(
+  {
+    [toggleTutor]: (state, { payload }) => ({
+      ...state,
+      showTutor: payload !== undefined ? payload : !state.showTutor,
+    }),
+    [updateViewportSize]: (state, { payload: { height, width } }) => ({
+      ...state,
+      viewportSize: {
+        height,
+        width,
+      },
+    }),
+    [switchColorscheme]: (state, { payload }) => ({
+      ...state,
+      colorscheme: getColorscheme(payload),
+    }),
+    [toggleTransitionStatus]: (state, { payload }) => ({
+      ...state,
+      onTransition: payload !== undefined ? payload : !state.onTransition,
+    }),
+  },
+  defaultState,
+);
