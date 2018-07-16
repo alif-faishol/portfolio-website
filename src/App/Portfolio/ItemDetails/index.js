@@ -23,6 +23,9 @@ const RootContainer = styled.div`
     width: 100%;
     height: 0;
     position: relative;
+    @media screen and (min-width: 500px) {
+      width: 95%;
+    }
     & .content {
       display: flex;
       flex-flow: column;
@@ -217,7 +220,8 @@ class ItemDetails extends React.Component {
         >
           {show && (
           <div className="content">
-            <div className="desc"
+            <div
+              className="desc"
               ref={(ref) => { this.desc = ref; }}
             >
               <div className="header">
