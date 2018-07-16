@@ -2,12 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   loadData,
-  toggleLoading,
-  toggleDetailsData,
   loadDetailsData,
 } from 'redux/modules/portfolio';
 import { confDynamicMenu, confTitle } from 'redux/modules/menu';
-import api from 'apiHandler';
 import styled from 'styled-components';
 import PortfolioItem from 'App/Portfolio/PortfolioItem';
 import Loading from 'App/common/animation/Loading';
@@ -34,18 +31,12 @@ class Portfolio extends React.Component {
     const {
       match,
       _loadData,
-      _toggleLoading,
       _confTitle,
       _confDynamicMenu,
     } = this.props;
-    api.getPortfolioItems({
+    _loadData({
       page: match.params.page ? match.params.page : 1,
-    })
-      .then((res) => {
-        _loadData(res);
-        _toggleLoading(false);
-      })
-      .catch(err => console.log(err));
+    });
 
     _confTitle('Portfolio');
 
@@ -61,36 +52,20 @@ class Portfolio extends React.Component {
       filter,
       history,
       match,
-      _toggleLoading,
       _loadData,
     } = this.props;
     if (filter !== nextProps.filter) {
       history.push('/portfolio');
     }
     if (match.params !== nextProps.match.params) {
-      _toggleLoading(true);
-      api.getPortfolioItems({
+      _loadData({
         page: nextProps.match.params.page ? nextProps.match.params.page : 1,
         filter: nextProps.filter,
-      })
-        .then((res) => {
-          _loadData(res);
-          _toggleLoading(false);
-        })
-        .catch(err => console.log(err));
+      });
     }
   }
 
   componentWillUnmount() {
-    const {
-      _toggleLoading,
-      _confDynamicMenu,
-      _confTitle,
-    } = this.props;
-
-    _toggleLoading(true);
-    _confDynamicMenu();
-    _confTitle();
   }
 
   render() {
@@ -98,7 +73,6 @@ class Portfolio extends React.Component {
       loading,
       items,
       match,
-      _toggleDetailsData,
       _loadDetailsData,
     } = this.props;
     return (
@@ -121,7 +95,6 @@ class Portfolio extends React.Component {
                   category={item.category}
                   onKeyDown={e => console.log(e.keyCode)}
                   onClick={() => {
-                    _toggleDetailsData(true);
                     _loadDetailsData(item);
                   }}
                 />
@@ -147,10 +120,8 @@ export default connect(
   }),
   dispatch => ({
     _loadData: data => dispatch(loadData(data)),
-    _toggleLoading: state => dispatch(toggleLoading(state)),
     _confTitle: title => dispatch(confTitle(title)),
     _confDynamicMenu: conf => dispatch(confDynamicMenu(conf)),
-    _toggleDetailsData: state => dispatch(toggleDetailsData(state)),
     _loadDetailsData: data => dispatch(loadDetailsData(data)),
   }),
 )(Portfolio);

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
   Route,
+  withRouter,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -83,7 +83,6 @@ const PageContainer = styled.div`
 `;
 
 const App = ({ colorscheme }) => (
-  <Router>
     <div>
       <style>
         {globalStyle(colorscheme.contentBG)}
@@ -117,15 +116,14 @@ const App = ({ colorscheme }) => (
         />
       </PageContainer>
     </div>
-  </Router>
 );
 
 App.propTypes = {
   colorscheme: PropTypes.object.isRequired,
 };
 
-export default connect(
+export default withRouter(connect(
   ({ main }) => ({
     colorscheme: main.colorscheme,
   }),
-)(App);
+)(App));

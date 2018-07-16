@@ -46,11 +46,8 @@ class Menu extends React.Component {
     );
     this.state = this.stateConstructor(props.menuContent);
     this.animated = {};
-    this.animate = (target, val, cb = (() => null)) => {
-      const {
-        menuExpanded,
-      } = this.props;
-      if (!menuExpanded) {
+    this.animate = (target, val, cb = (() => null), menuExpanded) => {
+      if (menuExpanded) {
         TweenMax
           .set(target, {
             ...Object.keys(val).reduce((total, cur) => {
@@ -59,7 +56,7 @@ class Menu extends React.Component {
             }, {}),
           });
       }
-      TweenMax[menuExpanded ? 'to' : 'from'](target, 0.75, {
+      TweenMax[menuExpanded ? 'from' : 'to'](target, 0.75, {
         ...Object.keys(val).reduce((total, cur) => {
           total[cur] = val[cur][1];
           return total;
@@ -76,15 +73,18 @@ class Menu extends React.Component {
     const {
       menuExpanded,
       _toggleTransitionStatus,
+      match,
     } = this.props;
     if (
-      (nextProps.menuExpanded !== menuExpanded)
+      (nextProps.menuExpanded !== menuExpanded || match.isExact !== nextProps.match.isExact)
     ) {
       const nextState = this.stateConstructor(nextProps.menuContent);
       _toggleTransitionStatus(true);
       this.animate(
         this.animated.RootContainer,
         nextState.RootContainerAni,
+        () => null,
+        nextProps.menuExpanded,
       );
       this.animate(
         this.animated.MenuHeader,
@@ -93,6 +93,7 @@ class Menu extends React.Component {
           _toggleTransitionStatus(false);
           this.setState(nextState);
         },
+        nextProps.menuExpanded,
       );
     }
   }

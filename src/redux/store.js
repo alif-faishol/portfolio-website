@@ -7,7 +7,7 @@ import reducer from 'redux/modules/reducer';
 export const history = createBrowserHistory();
 
 /* eslint-disable no-underscore-dangle */
-const composedEnhanchers = (process.env.NODE_ENV === 'development'
+const composeEnhanchers = (process.env.NODE_ENV === 'development'
   && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
   || compose;
 /* eslint-enable */
@@ -15,7 +15,7 @@ const composedEnhanchers = (process.env.NODE_ENV === 'development'
 const store = createStore(
   connectRouter(history)(reducer),
   {},
-  composedEnhanchers(
+  composeEnhanchers(
     applyMiddleware(
       routerMiddleware(history),
       thunk,
